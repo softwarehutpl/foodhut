@@ -10,6 +10,9 @@ module.exports = {
             test: /\.css$/,
             loader: 'style!css',
         }, {
+            test: /\.json$/,
+            loader: 'json-loader'
+        }, {
             test: /.jsx?$/,
             loader: 'babel-loader',
             exclude: /node_modules/,
