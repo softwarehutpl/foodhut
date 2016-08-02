@@ -1,3 +1,6 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 import './styles/style.css';
 
 import Hello from './content/hello.jsx';
@@ -21,3 +24,7 @@ orderService.getOrders()
 	.then(orders => {
 		console.log(orders);
 	});
+	
+import Test from './views/test/test.module.jsx';
+
+ReactDOM.render(Test, document.querySelector('div'));
