@@ -6,33 +6,72 @@ import Syncano from 'syncano';
 
 const node = document.querySelector('#content'); 
 
-const connection = Syncano({ accountKey: "7f1adc626650d02b996dc0be0fb82a9a6ffbc8ae"});
+var connection = Syncano({ 
+	accountKey: "7f1adc626650d02b996dc0be0fb82a9a6ffbc8ae",
+});
+
+var DataObject = connection.DataObject;
+
+var query = {
+	instanceName: "autumn-field-2134", 
+	className: "user_profile"
+}
 	
-connection.DataObject
+DataObject
   	.please()
-  	.list({instanceName: "autumn-field-2134", className: "user_profile"})		  	
- 	.then((user_profile) => {
-    	console.log(user_profile);
+  	.list(query)		  	
+ 	.then((res) => {
+    	console.log(res);
     });
 
-class Headline extends React.Component {
+class Header extends React.Component {
 	render() {
 		return <h1>FoodHut</h1>
 	}
 }
 
+class User extends React.Component {
+	render() {
+		return (
+			<tr>
+				<td>Jacek</td>
+				<td>Tak</td>
+				<td>120</td>
+			</tr>
+		)
+	}
+}
+
 class UserList extends React.Component {
   	render() {
-
+  		return (
+  			<table class="user-list">
+  				<tbody>
+	  				<tr>
+	  					<th>Kto</th>
+	  					<th>Czy admin</th>
+	  					<th>Balance</th>
+					</tr>
+					<User/>
+				</tbody>
+  			</table>	
+		)
   	}
 }
+
+// class UserForm extends React.Component {
+// 	render() {
+
+// 	}
+// }
 
 class Users extends React.Component {
 	render() {
 		return (
 			<div>
-			<Headline/>
+				<Header/>
 				<h3>Lista ludzi:</h3>
+				<UserList/>
 			</div>
 		)
 	}
