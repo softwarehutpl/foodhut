@@ -1,6 +1,7 @@
 import BaseService from './base.service';
 
 const orderClass = 'orders';
+const restaurantClass = 'restaurants';
 
 export default class OrderService extends BaseService {
 
@@ -48,5 +49,13 @@ export default class OrderService extends BaseService {
             .then(function(dataObjects) {
                 return dataObjects;
             });
+    }
+
+    getTestRestaurant() {
+    	console.log('this connection', this.connection.instance);
+    	return this.connection.instance
+            .class(restaurantClass)
+            .dataObject()
+            .detail(5);
     }
 }

@@ -5,8 +5,19 @@ import World from './content/world.jsx';
 
 import $order from './services/order.service.js';
 
-var test = new $order();
-test.getOrders()
+var orderService = new $order();
+var testRestaurant = null;
+orderService.getTestRestaurant()
+	.then(testRest => {
+		testRestaurant = testRest;
+		console.log('testRest', testRest);
+	});
+
+// orderService.addOrder({
+
+// })
+
+orderService.getOrders()
 	.then(orders => {
 		console.log(orders);
 	});
