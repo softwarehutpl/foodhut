@@ -7,6 +7,11 @@ import $user from '../../services/user.service.js';
 import $test from '../../services/test.service.js';
 import MOCK from '../../mock.js';
 
+// TODO:
+// account balance
+// zapisywanie autocomplete'a
+// czytanie z autocomplete'a
+// usuwanie swojego zamowienia
 
 var userService = new $user();
 var orderDishService = new $orderDish();

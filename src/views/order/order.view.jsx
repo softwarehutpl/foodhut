@@ -4,8 +4,8 @@ import $user from '../../services/user.service.js';
 class OrderDish extends React.Component {
 	render() {
 		return (<div>
-			{this.props.orderDish.userName}, 
-			{this.props.orderDish.dishName}, 
+			{this.props.orderDish.userName},
+			{this.props.orderDish.dishName},
 			{this.props.orderDish.price},
 			{this.props.orderDish.fresh}
 		</div>);
@@ -31,7 +31,7 @@ class DishAdder extends React.Component {
 	}
 
 	setPrice(e) {
-		this.setPrice({price: parseInt(e.target.value)});
+		this.setState({price: parseInt(e.target.value)});
 	}
 
 	render() {
