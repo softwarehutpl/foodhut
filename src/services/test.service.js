@@ -20,9 +20,9 @@ export default class TestService extends BaseServcie {
         return this.fetch(query);
     }
 
-    getLoggedUser() {
+    getLoggedUser(id) {
         var query = {
-            id: 1,
+            id: id,
             className: this.constant.userClass
         };
 

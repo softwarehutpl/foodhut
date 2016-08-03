@@ -6,7 +6,8 @@ class OrderDish extends React.Component {
 		return (<div>
 			{this.props.orderDish.userName}, 
 			{this.props.orderDish.dishName}, 
-			{this.props.orderDish.price}
+			{this.props.orderDish.price},
+			{this.props.orderDish.fresh}
 		</div>);
 	}
 }
@@ -18,7 +19,7 @@ class DishAdder extends React.Component {
 		$user.get
 		this.state = {
 			dishName: '',
-			price: 0.00
+			price: 0
 		};
 
 		this.setDishName = this.setDishName.bind(this);
@@ -36,7 +37,7 @@ class DishAdder extends React.Component {
 	render() {
 		return (<div>
 			<input value={this.state.dishName} onChange={this.setDishName}/>
-			<input value={this.state.price} onChange={this.price} type="number" step="0.01"/>
+			<input value={this.state.price} onChange={this.price} />
 			<button onClick={()=>this.props.addDish(this.state.dishName, this.state.price)}>Add</button>
 		</div>);
 	}

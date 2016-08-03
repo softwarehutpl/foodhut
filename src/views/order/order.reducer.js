@@ -9,6 +9,7 @@ function add(state, action) {
         userName: action.userName,
         dishName: action.dishName,
         price: action.price,
+        fresh: 'NOT ON A SERVER YET',
     });
 
     return Object.assign({}, state, { orderDishes: orderDishes });

@@ -5,27 +5,18 @@ import OrderStore from './order.store.js';
 import $orderDish from '../../services/order-dish.service.js';
 import $user from '../../services/user.service.js';
 import $test from '../../services/test.service.js';
+import MOCK from '../../mock.js';
 
-// export default class OrderModule {
-
-// }
 
 var userService = new $user();
 var orderDishService = new $orderDish();
 var testService = new $test();
 
 var USER = null;
-var ORDER = null;
-testService.getLoggedUser()
+testService.getLoggedUser(MOCK.USER_ID)
 	.then(function(user) {
 		USER = user;
 	});
-
-testService.getCurrentOrder()
-	.then(function(order) {
-		ORDER = order;
-	});
-
 
 function storeToProps(store) {
 	return {
@@ -38,10 +29,11 @@ function dispatchToProps(dispatch) {
 		addDish: function addDish(dishName, price) {
 			dispatch({
 				type: 'ADD_DISH',
+				userName: USER.name,
 				dishName: dishName,
 				price: price,
 			});
-			orderDishService.addOrderDish(dishName, price, ORDER.id, USER.id)
+			orderDishService.addOrderDish(dishName, price, MOCK.ORDER_id, MOCK.USER_ID)
 				.then(() => {
 					fetchDishes();
 				});
@@ -50,8 +42,7 @@ function dispatchToProps(dispatch) {
 }
 
 function fetchDishes() {
-	//orderDishService.getOrderDishes(ORDER ? ORDER.id : null)
-	orderDishService.getOrderDishes(28)
+	orderDishService.getOrderDishes(MOCK.ORDER_ID)
 		.then(function success(orderDishes){
 			OrderStore.dispatch({
 				type: 'INIT_DATA',
@@ -60,6 +51,7 @@ function fetchDishes() {
 						dishName: orderDish.name,
 						price: orderDish.price,
 						userName: orderDish.user.name,
+						fresh: '',
 					};
 				}),
 			});
