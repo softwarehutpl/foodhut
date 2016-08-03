@@ -59,6 +59,54 @@ class UserList extends React.Component {
   	}
 }
 
+class UserForm extends React.Component {
+	constructor (props) {
+		super(props);
+
+		this.state = {
+			name: '',
+			balance: 0
+		}
+	}
+	setName(e) {
+		this.setState({
+			name: e.target.value
+		});
+	}
+	setBalance(e) {
+		this.setState({
+			balance: e.target.value
+		});
+	}
+	handleSubmit(e) {
+		e.preventDefault();
+		var author = this.state.name;
+		var text = this.state.balance;
+		if (!text || !author) {
+		  return;
+		}
+		this.props.onUserSubmit({name: name, balance: balance});
+		this.setState({name: '', balance: 0});
+	}
+	render() {
+		return (
+			<form className="add-user">
+				<input
+					type="text"
+					placeholder="User name"
+					onChange={this.setName}
+		        />
+		        <input
+					type="text"
+					placeholder="User balance"
+					onChange={this.setBalance}
+		        />
+		        <input type="submit" value="Add user" />
+			</form>
+		)
+	}
+}
+
 class Users extends React.Component {
 	constructor (props) {
 		super(props);
@@ -77,12 +125,16 @@ class Users extends React.Component {
     componentDidMount() {     
         this.fetchUsers();
     }
+    handleUserSubmit() {
+
+	}
 	render() {
 		return (
 			<div>
 				<Header/>
 				<h3>Lista ludzi:</h3>
 				<UserList users={this.state.users}/>
+				<UserForm onUserSubmit={this.handleUserSubmit}/>
 			</div>
 		)
 	}
