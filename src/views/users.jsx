@@ -4,16 +4,26 @@ import Syncano from 'syncano';
 
 // import Headline from './header';
 
-const node = document.querySelector('#content'); 
+const node = document.querySelector('#content');
 
-var connection = Syncano({ 
+var connection = Syncano({
 	accountKey: "7f1adc626650d02b996dc0be0fb82a9a6ffbc8ae",
 });
+
+// TODO:
+// w syncano dodac hasla
+// edycja hasel
+// edycja balansu kasy konta hajsu $$
+// redux:
+// 1) zdefiniowac akcje
+// 2) napisac reducera
+// 3) z reducera store'a (createStore(reducer))
+// 4) storeToProps + dispatchToProps -> connect()(Users) => <ReduxUsers/> => <Provider store={store}><ReduxUsers/></Provider>
 
 var DataObject = connection.DataObject;
 
 var query = {
-	instanceName: "autumn-field-2134", 
+	instanceName: "autumn-field-2134",
 	className: "user_profile"
 }
 
@@ -54,7 +64,7 @@ class UserList extends React.Component {
   				<tbody>
 					{usersNodes}
 				</tbody>
-  			</table>	
+  			</table>
 		)
   	}
 }
@@ -67,6 +77,10 @@ class UserForm extends React.Component {
 			name: '',
 			balance: 0
 		}
+
+		this.setName = this.setName.bind(this);
+		this.setBalance = this.setBalance.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 	setName(e) {
 		this.setState({
@@ -80,9 +94,9 @@ class UserForm extends React.Component {
 	}
 	handleSubmit(e) {
 		e.preventDefault();
-		var author = this.state.name;
-		var text = this.state.balance;
-		if (!text || !author) {
+		var name = this.state.name;
+		var balance = this.state.balance;
+		if (!name || !balance) {
 		  return;
 		}
 		this.props.onUserSubmit({name: name, balance: balance});
@@ -90,7 +104,7 @@ class UserForm extends React.Component {
 	}
 	render() {
 		return (
-			<form className="add-user">
+			<form className="add-user" onSubmit={this.handleSubmit}>
 				<input
 					type="text"
 					placeholder="User name"
@@ -110,19 +124,19 @@ class UserForm extends React.Component {
 class Users extends React.Component {
 	constructor (props) {
 		super(props);
-		this.state = { 
-			users: [] 
+		this.state = {
+			users: []
 		};
 	}
     fetchUsers() {
     	DataObject
 	  	.please()
-	  	.list(query)		  	
+	  	.list(query)
 	 	.then((res) => {
 	    	this.setState({ users: res })
 	    });
     }
-    componentDidMount() {     
+    componentDidMount() {
         this.fetchUsers();
     }
     handleUserSubmit() {
@@ -139,5 +153,5 @@ class Users extends React.Component {
 		)
 	}
 }
- 
+
 ReactDOM.render(<Users/>, node);
