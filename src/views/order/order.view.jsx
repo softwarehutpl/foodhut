@@ -1,4 +1,5 @@
 import React from 'react';
+import $user from '../../services/user.service.js';
 
 class OrderDish extends React.Component {
 	render() {
@@ -13,9 +14,11 @@ class OrderDish extends React.Component {
 class DishAdder extends React.Component {
 	constructor() {
 		super();
+		var userService = new $user();
+		$user.get
 		this.state = {
 			dishName: '',
-			price: 0
+			price: 0.00
 		};
 
 		this.setDishName = this.setDishName.bind(this);
@@ -33,7 +36,7 @@ class DishAdder extends React.Component {
 	render() {
 		return (<div>
 			<input value={this.state.dishName} onChange={this.setDishName}/>
-			<input value={this.state.price} onChange={this.price}/>
+			<input value={this.state.price} onChange={this.price} type="number" step="0.01"/>
 			<button onClick={()=>this.props.addDish(this.state.dishName, this.state.price)}>Add</button>
 		</div>);
 	}

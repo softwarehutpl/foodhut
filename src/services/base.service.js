@@ -41,11 +41,8 @@ export default class BaseService {
      * @parameter {String} name
      * @return {Promise}
      */
-    fetchList(name) {
-        var query = {
-            name: name,
-            instanceName: this.constant.instanceName,
-        };
+    fetchList(query) {
+        query.instanceName = this.constant.instanceName;
 
         return this.connection.DataEndpoint
             .please()

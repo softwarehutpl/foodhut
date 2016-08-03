@@ -46,7 +46,12 @@ export default class OrderDishService extends BaseService {
      * fetches all order dishes
      * @return {Promise}
      */
-    getOrderDishes() {
-        return this.fetchList(this.constant.orderDishesClass);
+    getOrderDishes(id) {
+        var query = {
+            id: id,
+            name: this.constant.orderDishesClass
+        };
+
+        return this.fetchList(query);
     }
 }
