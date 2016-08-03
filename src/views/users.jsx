@@ -17,13 +17,6 @@ var query = {
 	className: "user_profile"
 }
 
-// DataObject
-//   	.please()
-//   	.list(query)		  	
-//  	.then((res) => {
-//     	console.log(res);
-//     });
-
 class Header extends React.Component {
 	render() {
 		return <h1>FoodHut</h1>
@@ -34,23 +27,19 @@ class User extends React.Component {
 	render() {
 		return (
 			<tr>
-				<td>Michal</td>
-				<td>True</td>
-				<td>240</td>
+				<td>{ this.props.user.name }</td>
+				<td>{ this.props.user.is_admin }</td>
+				<td>{ this.props.user.balance }</td>
 			</tr>
 		)
 	}
 }
 
 class UserList extends React.Component {
-	constructor(props) {
-        super(props); 
-    }
   	render() {
-  		console.log(this.props.users);
   		var usersNodes = this.props.users.map( user => {
 			return 	(
-				<User key={user.id} item={user} />
+				<User key={user.id} user={user} />
 			);
 		});
   		return (
@@ -85,7 +74,7 @@ class Users extends React.Component {
 	    	this.setState({ users: res })
 	    });
     }
-    componentDidMount() {       
+    componentDidMount() {     
         this.fetchUsers();
     }
 	render() {
@@ -93,7 +82,7 @@ class Users extends React.Component {
 			<div>
 				<Header/>
 				<h3>Lista ludzi:</h3>
-				<UserList data={this.state.users}/>
+				<UserList users={this.state.users}/>
 			</div>
 		)
 	}
