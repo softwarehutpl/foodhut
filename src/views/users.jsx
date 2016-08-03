@@ -16,13 +16,13 @@ var query = {
 	instanceName: "autumn-field-2134", 
 	className: "user_profile"
 }
-	
-DataObject
-  	.please()
-  	.list(query)		  	
- 	.then((res) => {
-    	console.log(res);
-    });
+
+// DataObject
+//   	.please()
+//   	.list(query)		  	
+//  	.then((res) => {
+//     	console.log(res);
+//     });
 
 class Header extends React.Component {
 	render() {
@@ -34,44 +34,66 @@ class User extends React.Component {
 	render() {
 		return (
 			<tr>
-				<td>Jacek</td>
-				<td>Tak</td>
-				<td>120</td>
+				<td>Michal</td>
+				<td>True</td>
+				<td>240</td>
 			</tr>
 		)
 	}
 }
 
 class UserList extends React.Component {
+	constructor(props) {
+        super(props); 
+    }
   	render() {
+  		console.log(this.props.users);
+  		var usersNodes = this.props.users.map( user => {
+			return 	(
+				<User key={user.id} item={user} />
+			);
+		});
   		return (
-  			<table class="user-list">
-  				<tbody>
-	  				<tr>
+  			<table className="user-list">
+  				<thead>
+  					<tr>
 	  					<th>Kto</th>
 	  					<th>Czy admin</th>
 	  					<th>Balance</th>
 					</tr>
-					<User/>
+  				</thead>
+  				<tbody>
+					{usersNodes}
 				</tbody>
   			</table>	
 		)
   	}
 }
 
-// class UserForm extends React.Component {
-// 	render() {
-
-// 	}
-// }
-
 class Users extends React.Component {
+	constructor (props) {
+		super(props);
+		this.state = { 
+			users: [] 
+		};
+	}
+    fetchUsers() {
+    	DataObject
+	  	.please()
+	  	.list(query)		  	
+	 	.then((res) => {
+	    	this.setState({ users: res })
+	    });
+    }
+    componentDidMount() {       
+        this.fetchUsers();
+    }
 	render() {
 		return (
 			<div>
 				<Header/>
 				<h3>Lista ludzi:</h3>
-				<UserList/>
+				<UserList data={this.state.users}/>
 			</div>
 		)
 	}
