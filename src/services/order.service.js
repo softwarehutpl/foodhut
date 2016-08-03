@@ -1,8 +1,5 @@
 import BaseService from './base.service';
 
-const orderClass = 'orders';
-const restaurantClass = 'restaurants';
-
 export default class OrderService extends BaseService {
 
     /**
@@ -14,48 +11,38 @@ export default class OrderService extends BaseService {
 
     /**
      * @param {Object} order
-     * @param {Function} callback
      * @return {Promise}
      */
-    addOrder(order, callback) {
-        return this.connection.instance
-            .class(orderClass)
-            .dataObject()
-            .add(order, callback);
+    addOrder(restaurantId) {
+        var order = {
+            restaurant: restaurantId,
+            is_closed: false,
+            date_created: new Date().toISOString(),
+            className: this.constant.orderClass,
+        }
+
+        return this.add(order);
     }
 
     /**
      * fetches specific order
-     * @param {String} id
-     * @param {Object} filter
-     * @param {Function} callback
+     * @param {Number} id
      * @return {Promise}
      */
-    getOrder(id, filter, callback) {
-        return this.connection.instance
-            .class(orderClass)
-            .dataObject()
-            .detail(id, filter, callback);
+    getOrder(id) {
+        var query = {
+            id: id,
+            className: this.constant.orderClass
+        };
+
+        return this.fetch(query);
     }
 
     /**
-     * fetches restaurants
+     * fetches orders
      * @return {Promise}
      */
     getOrders() {
-        return this.connection.DataEndpoint
-            .please()
-            .fetchData({ name: 'orders', instanceName: 'autumn-field-2134' })
-            .then(function(dataObjects) {
-                return dataObjects;
-            });
-    }
-
-    getTestRestaurant() {
-    	console.log('this connection', this.connection.instance);
-    	return this.connection.instance
-            .class(restaurantClass)
-            .dataObject()
-            .detail(5);
+        return this.fetchList(this.constant.orderClass);
     }
 }

@@ -7,24 +7,29 @@ import Hello from './content/hello.jsx';
 import World from './content/world.jsx';
 
 import $order from './services/order.service.js';
+import $test from './services/test.service.js';
 
 var orderService = new $order();
-var testRestaurant = null;
-orderService.getTestRestaurant()
-	.then(testRest => {
-		testRestaurant = testRest;
-		console.log('testRest', testRest);
-	});
+var testService = new $test();
 
-// orderService.addOrder({
-
-// })
-
-orderService.getOrders()
+testService.getTestRestaurant()
+	.then(restaurant => {
+		return orderService.addOrder(restaurant.id);
+	})
+	.then(()=>{
+		console.log('added new order');
+		return;
+	})
+	.then(()=> {
+		return orderService.getOrders();
+	})
 	.then(orders => {
-		console.log(orders);
-	});
-	
-import Test from './views/test/test.module.jsx';
+		console.log('all orders', orders);
+	})
+	.then(()=> {
+		console.log('end of test');
+	})
 
-ReactDOM.render(Test, document.querySelector('div'));
+// import Test from './views/test/test.module.jsx';
+
+// ReactDOM.render(Test, document.querySelector('div'));
