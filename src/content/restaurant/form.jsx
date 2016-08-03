@@ -140,7 +140,7 @@ export default class RestaurantForm extends React.Component {
                         className='ui-input'
                         validations={[{
                             rule: 'isFloat',
-                            errorMessage: 'Cena może się składać tylko z liczb i `.`'
+                            errorMessage: 'Cena może się składać tylko z cyfr i `.`'
                         }]}
                         name='package_cost'
                         type='text'

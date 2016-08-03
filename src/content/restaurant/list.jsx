@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React, {PropTypes} from 'react';
 import Restaurant from './item.jsx';
 import RestaurantBox from './module.jsx';
 
@@ -12,7 +12,7 @@ export default class RestaurantList extends React.Component {
   	render() {
   		const restaurantNodes = this.props.restaurants.map( restaurant => {
 			return 	(
-				<Restaurant key={restaurant.id ? restaurant.id : Date.now()} item={restaurant} />
+				<Restaurant key={restaurant.id ? restaurant.id : Date.now()} restaurant={restaurant} />
 			);
 		});
 
@@ -32,6 +32,9 @@ export default class RestaurantList extends React.Component {
 		    				<th className="sortable" onClick={() => this.props.onOrderByChange('package_cost')}>
 		    					Cena za opakowanie  { this.props.orderBy === RestaurantList.ORDER_BY_PACKAGE_COST ? <span>&darr;</span> : ''}
 		    				</th>
+		    				<th>
+		    					Akcje
+		    				</th>
 	    				</tr>
 	    			</thead>
 	    			<tbody>
@@ -41,6 +44,13 @@ export default class RestaurantList extends React.Component {
 			</div>
 		);
   	}
+}
+
+//Props validation
+RestaurantList.propTypes = {
+	restaurants: PropTypes.array.isRequired,
+	orderBy: React.PropTypes.string.isRequired,
+	onOrderByChange: PropTypes.func.isRequired
 }
 
 //Define class constants

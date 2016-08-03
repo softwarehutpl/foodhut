@@ -2,13 +2,13 @@
 
 import Syncano from 'syncano';
 
-const connection = Syncano({ accountKey: '1d478bf20e28272c6abcfd22b42a50110207de56'}),
-	DataObject = connection.DataObject,
-	syncanoSettings = {
+const connection = Syncano({
+	accountKey: '1d478bf20e28272c6abcfd22b42a50110207de56',
+	defaults: {
 		instanceName: "autumn-field-2134", 
         className: "restaurants"
 	}
-;
+});
 
 export default class RestaurantSyncanoService {
 
@@ -20,9 +20,9 @@ export default class RestaurantSyncanoService {
 	 * @return {DataObject}
 	 */
 	static addRestaurant(restaurant) {
-		return DataObject
+		return connection.DataObject
             .please()
-            .create(Object.assign({}, restaurant, syncanoSettings))
+            .create(Object.assign({}, restaurant))
         ;
 	}
 
@@ -35,9 +35,9 @@ export default class RestaurantSyncanoService {
 	 * @return {DataObject}
 	 */
 	static getActiveRestaurants(orderBy, orderDirection = 'asc') {
-		return DataObject
+		return connection.DataObject
             .please()
-            .list(syncanoSettings)    
+            .list()    
             .filter({
                 is_active: {_eq: true}
             })
