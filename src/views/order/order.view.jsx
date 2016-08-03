@@ -3,8 +3,8 @@ import React from 'react';
 class OrderDish extends React.Component {
 	render() {
 		return (<div>
-			{this.props.orderDish.userName}
-			{this.props.orderDish.dishName}
+			{this.props.orderDish.userName}, 
+			{this.props.orderDish.dishName}, 
 			{this.props.orderDish.price}
 		</div>);
 	}

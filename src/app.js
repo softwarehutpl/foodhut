@@ -12,8 +12,6 @@ import Order from './views/order/order.module.jsx';
 ReactDOM.render(Order, document.querySelector('div'));
 
 
-
-
 // import $test from './services/order-dish.service.js';
 // import $order from './services/order.service.js';
 // var orderService = new $order();

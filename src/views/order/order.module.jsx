@@ -3,6 +3,8 @@ import { Provider, connect } from 'react-redux';
 import OrderView from './order.view.jsx';
 import OrderStore from './order.store.js';
 import $orderDish from '../../services/order-dish.service.js';
+import $user from '../../services/user.service.js';
+
 function storeToProps(store) {
 	return {
 		orderDishes: store.orderDishes,
@@ -27,9 +29,17 @@ function refetch() {
 	var orderDishService = new $orderDish();
 	orderDishService.getOrderDishes()
 		.then(function success(orderDishes){
+			var userService = new $user();
 			OrderStore.dispatch({
 				type: 'INIT_DATA',
-				orderDishes: orderDishes.objects,
+				orderDishes: orderDishes.objects.map(orderDish=>{
+					console.log('orderDishX', orderDish);
+					return	{
+								dishName: orderDish.name,
+								price: orderDish.price,
+								userName: orderDish.user.name,
+							};
+				}),
 			});
 		});
 }

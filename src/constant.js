@@ -4,4 +4,5 @@ export default {
     restauranClass: 'restaurants',
     orderDishesClass: 'order_dishes',
     dishClass: 'dishes_autocomplete ',
+    userClass: 'user_profile',
 };
