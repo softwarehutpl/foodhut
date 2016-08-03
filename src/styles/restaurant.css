@@ -1,0 +1,12 @@
+.restaurantForm input {
+	margin-bottom: 18px;
+}
+
+input.ui-input_state_invalid {
+	border:1px red solid;
+	background-color: #FFD4D4;
+}
+
+.restaurantList th.sortable {
+	cursor:pointer;
+}

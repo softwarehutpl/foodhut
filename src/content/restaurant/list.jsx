@@ -2,29 +2,36 @@
 
 import React from 'react';
 import Restaurant from './item.jsx';
+import RestaurantBox from './module.jsx';
 
 export default class RestaurantList extends React.Component {
 	constructor(props) {
-        super(props); 
+        super(props);
     }
 
   	render() {
   		const restaurantNodes = this.props.restaurants.map( restaurant => {
 			return 	(
-				<Restaurant key={restaurant.id} item={restaurant} />
+				<Restaurant key={restaurant.id ? restaurant.id : Date.now()} item={restaurant} />
 			);
 		});
 
     	return (
-    		<div>
+    		<div className="restaurantList">
 	    		<h3>Knajpy</h3>
 	    		<table>
 	    			<thead>
 	    				<tr>
 		    				<th >ID</th>
-		    				<th onClick={ () => this.props.onOrderByChange('name')}>Nazwa</th>
-		    				<th>Link do menu</th>
-		    				<th onClick={ () => this.props.onOrderByChange('package_cost')}>Cena za opakowanie</th>
+		    				<th className="sortable" onClick={() => this.props.onOrderByChange('name')}>
+		    					Nazwa { this.props.orderBy === RestaurantList.ORDER_BY_NAME ? <span>&darr;</span> : ''}
+		    				</th>
+		    				<th className="sortable"onClick={() => this.props.onOrderByChange('menu_link')}>
+		    					Link do menu  { this.props.orderBy === RestaurantList.ORDER_BY_MENU_LINK ? <span>&darr;</span> : ''}
+		    				</th>
+		    				<th className="sortable" onClick={() => this.props.onOrderByChange('package_cost')}>
+		    					Cena za opakowanie  { this.props.orderBy === RestaurantList.ORDER_BY_PACKAGE_COST ? <span>&darr;</span> : ''}
+		    				</th>
 	    				</tr>
 	    			</thead>
 	    			<tbody>
@@ -35,3 +42,19 @@ export default class RestaurantList extends React.Component {
 		);
   	}
 }
+
+//Define class constants
+Object.defineProperties(RestaurantList, {
+	'ORDER_BY_NAME':  {
+		value: 'name', 
+		writable: false
+	},
+	'ORDER_BY_MENU_LINK': {
+		value: 'menu_link', 
+		writable: false
+	},
+	'ORDER_BY_PACKAGE_COST': {
+		value: 'package_cost', 
+		writable: false
+	}
+});

@@ -2,29 +2,66 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Syncano from 'syncano';
 import RestaurantList from './list.jsx';
+import RestaurantForm from './form.jsx';
+import RestaurantSyncanoService from './RestaurantSyncanoService.js';
 import _ from 'underscore';
 
-const connection = Syncano({ accountKey: '1d478bf20e28272c6abcfd22b42a50110207de56'}),
-    refreshInterval = 5 //in minutes
-;
+const refreshInterval = 5; //in minutes
 
-class RestaurantBox extends React.Component {
+class RestaurantBox extends React.Component {    
+    /**
+     * Constructor
+     * 
+     * @param  {Object} props
+     */
 	constructor(props) {
         super(props);
+
         this.getRestaurants = this.getRestaurants.bind(this);
         this.handleOrderByChange = this.handleOrderByChange.bind(this);
+        this.handleRestaurantAddition = this.handleRestaurantAddition.bind(this);
 
         this.state = {
             restaurants: [],
-            orderBy: 'name'
+            orderBy: RestaurantList.ORDER_BY_NAME
         };
-
     }
 
+    /**
+     * Handle adding restauration
+     * 
+     * @param  {String} field
+     */
+    handleRestaurantAddition(restaurant) {
+        var restaurants = this.state.restaurants;            
+
+        this.setState({
+            restaurants: _.sortBy(restaurants.concat([restaurant]), this.state.orderBy)
+        });
+
+        RestaurantSyncanoService
+            .addRestaurant(restaurant)
+            .then((restaurant) => {
+                //console.log(restaurant);
+            })
+            .catch((error) => {
+                // restore original restaurants array
+                this.setState({
+                    restaurants: _.sortBy(restaurants, this.state.orderBy),
+                });
+                console.log(`Add restaurant error: ${error}`);
+            })
+        ;
+    }
+
+    /**
+     * Handle order by change
+     * 
+     * @param  {String} field
+     */
     handleOrderByChange(field) {
-        const allowed = ['name', 'package_cost'];
+        const allowed = [RestaurantList.ORDER_BY_NAME, RestaurantList.ORDER_BY_MENU_LINK, RestaurantList.ORDER_BY_PACKAGE_COST];
 
         if (allowed.indexOf(field) !== -1) {
             this.setState({
@@ -34,21 +71,18 @@ class RestaurantBox extends React.Component {
         }
     }
 
-    getRestaurants() {      
-        //console.log(connection.DataObject.please());  
-        connection.DataObject
-            .please()
-            .list({instanceName: "autumn-field-2134", className: "restaurants"})    
-            .filter({
-                 is_active: {_eq: true}
-            })
-            .orderBy(this.state.orderBy)
-            .ordering('asc') 
+    /**
+     * Retrive restaurants via Syncano API
+     */
+    getRestaurants() {
+        // console.log(RestaurantSyncanoService.getActiveRestaurants(this.state.orderBy));
+        RestaurantSyncanoService
+            .getActiveRestaurants(this.state.orderBy)
             .then((restaurants) => {
                 this.setState({ restaurants });
             })
-            .catch(() => {
-                //handle error
+            .catch((error) => {
+                console.log(`Get restaurants error: ${error}`);
             })
         ;           
     }
@@ -64,6 +98,11 @@ class RestaurantBox extends React.Component {
                 <RestaurantList 
                     restaurants={this.state.restaurants} 
                     onOrderByChange={this.handleOrderByChange}
+                    orderBy={this.state.orderBy}
+                />
+                <br /><br />
+                <RestaurantForm 
+                    onRestaurantAddition={this.handleRestaurantAddition}
                 />
             </div>
 		);
