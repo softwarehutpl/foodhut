@@ -37,7 +37,7 @@ class DishAdder extends React.Component {
 	render() {
 		return (<div>
 			<input value={this.state.dishName} onChange={this.setDishName}/>
-			<input value={this.state.price} onChange={this.price} />
+			<input value={this.state.price} onChange={this.setPrice} type="number" />
 			<button onClick={()=>this.props.addDish(this.state.dishName, this.state.price)}>Add</button>
 		</div>);
 	}
@@ -46,7 +46,6 @@ class DishAdder extends React.Component {
 class OrderView extends React.Component {
 	render(){
 		let orderDishesArray = this.props.orderDishes.map((orderDish, i) => {
-			console.log('orderdish', orderDish);
 			return <OrderDish orderDish={orderDish} key={i}/>
 		});
 
