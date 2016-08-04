@@ -7,3 +7,7 @@ import './styles/style.css';
 
 import Order from './views/order/order.module.jsx';
 ReactDOM.render(Order, document.querySelector('div'));
+
+// import './styles/restaurant.css';
+// import Restaurants from './views/restaurants/page.jsx';
+// ReactDOM.render(<Restaurants/>, document.querySelector('div'));

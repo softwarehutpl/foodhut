@@ -37,8 +37,8 @@ function dispatchToProps(dispatch) {
 		addDish: function addDish(dishName, price) {
 			dispatch({
 				type: 'ADD_DISH',
-				userName: USER.name,
-				dishName: dishName,
+				user: { name: USER.name},
+				name: dishName,
 				price: price,
 			});
 			orderDishService.addOrderDish(dishName, price, MOCK.ORDER_id, MOCK.USER_ID)
@@ -64,15 +64,7 @@ function fetchDishes() {
 		.then(function success(orderDishes){
 			OrderStore.dispatch({
 				type: 'INIT_DATA',
-				orderDishes: orderDishes.objects.map(orderDish=>{
-					return	{
-						id: orderDish.id,
-						dishName: orderDish.name,
-						price: orderDish.price,
-						userName: orderDish.user.name,
-						fresh: '',
-					};
-				}),
+				orderDishes: orderDishes.objects
 			});
 		});
 }

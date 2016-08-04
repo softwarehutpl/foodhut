@@ -13,11 +13,11 @@ class AccountBalance extends React.Component {
 class OrderDish extends React.Component {
 	render() {
 		return (<div>
-			{this.props.orderDish.userName},
-			{this.props.orderDish.dishName},
+			{this.props.orderDish.user.name},
+			{this.props.orderDish.name},
 			{this.props.orderDish.price},
-			{this.props.orderDish.fresh}
 			<button onClick={()=>this.props.removeDish(this.props.orderDish.id)}>Remove</button>
+			{this.props.orderDish.fresh}
 		</div>);
 	}
 }
