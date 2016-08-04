@@ -2,13 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Syncano from 'syncano';
 
-// import Headline from './header';
-
 const node = document.querySelector('#content');
 
 var connection = Syncano({
-	accountKey: "7f1adc626650d02b996dc0be0fb82a9a6ffbc8ae",
+	apiKey: "4a76384d8137935042a557e020ace03382cdc755",
+	defaults: {
+		instanceName: "autumn-field-2134",
+		className: "user_profile"
+	}
 });
+
+var User = connection.User;
+
+var DataObject = connection.DataObject; 
 
 // TODO:
 // w syncano dodac hasla
@@ -20,12 +26,6 @@ var connection = Syncano({
 // 3) z reducera store'a (createStore(reducer))
 // 4) storeToProps + dispatchToProps -> connect()(Users) => <ReduxUsers/> => <Provider store={store}><ReduxUsers/></Provider>
 
-var DataObject = connection.DataObject;
-
-var query = {
-	instanceName: "autumn-field-2134",
-	className: "user_profile"
-}
 
 class Header extends React.Component {
 	render() {
@@ -33,11 +33,11 @@ class Header extends React.Component {
 	}
 }
 
-class User extends React.Component {
+class SingleUser extends React.Component {
 	render() {
 		return (
 			<tr>
-				<td>{ this.props.user.name }</td>
+				<td>{ this.props.user.username }</td>
 				<td>{ this.props.user.is_admin }</td>
 				<td>{ this.props.user.balance }</td>
 			</tr>
@@ -49,7 +49,7 @@ class UserList extends React.Component {
   	render() {
   		var usersNodes = this.props.users.map( user => {
 			return 	(
-				<User key={user.id} user={user} />
+				<SingleUser key={user.id} user={user} />
 			);
 		});
   		return (
@@ -79,12 +79,18 @@ class UserForm extends React.Component {
 		}
 
 		this.setName = this.setName.bind(this);
+		this.setPassword = this.setPassword.bind(this);
 		this.setBalance = this.setBalance.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 	setName(e) {
 		this.setState({
 			name: e.target.value
+		});
+	}
+	setPassword(e) {
+		this.setState({
+			password: e.target.value
 		});
 	}
 	setBalance(e) {
@@ -94,13 +100,14 @@ class UserForm extends React.Component {
 	}
 	handleSubmit(e) {
 		e.preventDefault();
-		var name = this.state.name;
+		var username = this.state.name;
+		var password = this.state.password;
 		var balance = this.state.balance;
-		if (!name || !balance) {
+		if (!username || !password || !balance) {
 		  return;
 		}
-		this.props.onUserSubmit({name: name, balance: balance});
-		this.setState({name: '', balance: 0});
+		this.props.onUserSubmit({username: username, password: password, balance: balance});
+		this.setState({name: '', password: '', balance: 0});
 	}
 	render() {
 		return (
@@ -108,11 +115,19 @@ class UserForm extends React.Component {
 				<input
 					type="text"
 					placeholder="User name"
+					value={this.state.username}
 					onChange={this.setName}
+		        />
+		        <input
+					type="password"
+					placeholder="Password"
+					value={this.state.password}
+					onChange={this.setPassword}
 		        />
 		        <input
 					type="text"
 					placeholder="User balance"
+					value={this.state.balance}
 					onChange={this.setBalance}
 		        />
 		        <input type="submit" value="Add user" />
@@ -127,11 +142,12 @@ class Users extends React.Component {
 		this.state = {
 			users: []
 		};
+		this.handleUserSubmit = this.handleUserSubmit.bind(this);
 	}
     fetchUsers() {
     	DataObject
 	  	.please()
-	  	.list(query)
+	  	.list()
 	 	.then((res) => {
 	    	this.setState({ users: res })
 	    });
@@ -139,15 +155,26 @@ class Users extends React.Component {
     componentDidMount() {
         this.fetchUsers();
     }
-    handleUserSubmit() {
+    handleUserSubmit(user) {
+    	const users = this.state.users
+	    const newUsers = users.concat([ user ])
+
+	    this.setState({ users: newUsers })
+
+		console.log('USER TO ADD', user)
+
+	    User
+	  	.please()
+	  	.create(user);
 
 	}
 	render() {
 		return (
 			<div>
-				<Header/>
+				<Header/>	
 				<h3>Lista ludzi:</h3>
 				<UserList users={this.state.users}/>
+				<h4>Dodaj użytkownika:</h4>
 				<UserForm onUserSubmit={this.handleUserSubmit}/>
 			</div>
 		)

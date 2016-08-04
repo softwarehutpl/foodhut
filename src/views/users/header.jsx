@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class Headline extends React.Component {
+class Header extends React.Component {
 	render() {
 		return <h1>FoodHut</h1>
 	}
 }
 
-export default Headline;
+export default Header;
