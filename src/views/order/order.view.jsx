@@ -18,7 +18,7 @@ class OrderDish extends React.Component {
 			{this.props.orderDish.user.username},
 			{this.props.orderDish.name},
 			{this.props.orderDish.price},
-			<button onClick={()=>this.props.removeDish(this.props.orderDish)}>Remove</button>
+			<button onClick={()=>this.props.removeDish(this.props.orderDish)}>Usuń</button>
 			{this.props.orderDish.fresh}
 		</div>);
 	}
@@ -49,14 +49,16 @@ class DishAdder extends React.Component {
 		return (<div>
 			<input value={this.state.name} onChange={this.setName}/>
 			<input value={this.state.price} onChange={this.setPrice} type="number" />
-			<button onClick={()=>this.props.addDish(this.state)}>Add</button>
+			<button onClick={()=>this.props.addDish(this.state)}>Dodaj</button>
 		</div>);
 	}
 }
 
 class OrderView extends React.Component {
 	render(){
+		let total = 0;
 		let orderDishesArray = this.props.orderDishes.map((orderDish, i) => {
+			total +=orderDish.price;
 			return <OrderDish orderDish={orderDish} key={i} removeDish={this.props.removeDish}/>
 		});
 
@@ -66,6 +68,7 @@ class OrderView extends React.Component {
 			<AccountBalance account={this.props.account} />
 			<DishAdder addDish={this.props.addDish} />
 			{orderDishesArray}
+			Kwota: {total}
 		</div>);
 	}
 }

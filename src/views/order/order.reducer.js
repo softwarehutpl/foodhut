@@ -9,7 +9,7 @@ function add(state, action) {
     let orderDishes = [].concat(state.orderDishes);
 
     orderDishes.push({
-        user: { name: action.user.username},
+        user: { username: action.user.username},
         name: action.name,
         price: action.price,
         fresh: 'NOT ON A SERVER YET',

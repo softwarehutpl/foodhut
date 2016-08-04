@@ -37,7 +37,7 @@ function dispatchToProps(dispatch) {
 		addDish: function addDish(dish) {
 			dispatch({
 				type: 'ADD_DISH',
-				user: { name: USER.name},
+				user: { username: USER.username},
 				name: dish.name,
 				price: dish.price,
 			});
@@ -50,10 +50,6 @@ function dispatchToProps(dispatch) {
 				});
 		},
 		removeDish: function removeDish(dish) {
-			dispatch({
-				type: 'REMOVE_DISH',
-				id: dish.id,
-			});
 			orderDishService.removeOrderDish(dish)
 				.then(()=>{
 					fetchDishes();
