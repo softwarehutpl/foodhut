@@ -18,22 +18,29 @@ function changeOrderBy(state, action) {
         orderBy: action.orderBy,      
         restaurants: _.sortBy(
             state.restaurants,
-            (restaurant) => { return  typeof restaurant[action.orderBy] === 'string' ? restaurant[action.orderBy].toLowerCase() : '';}
+            (restaurant) => { return  typeof restaurant[action.orderBy] === 'string' ? restaurant[action.orderBy].toLowerCase() : restaurant[action.orderBy]; }
         )        
     });
 }
 
 function addRestaurant(state, action) {
+    console.log(action);
     return Object.assign({}, state, {
         restaurants: _.sortBy([
             ...state.restaurants,
             {
                 is_active: true, //by default true
                 name: action.name,
-                menu_link: action.menuLink,
-                package_cost: action.packageCost
+                menu_link: action.menu_link,
+                package_cost: action.package_cost
             }
-        ], (restaurant) => { return typeof restaurant[state.orderBy] === 'string' ? restaurant[state.orderBy].toLowerCase() : ''; })
+        ], (restaurant) => { return typeof restaurant[state.orderBy] === 'string' ? restaurant[state.orderBy].toLowerCase() : restaurant[state.orderBy]; })
+    });
+}
+
+function removeRestaurant(state, action) {
+    return Object.assign({}, state, {
+        restaurants: _.filter(state.restaurants, (restaurant) => { return restaurant.id !== action.restaurantId })
     });
 }
 
@@ -45,6 +52,8 @@ function reduce(state = initialState, action) {
             return changeOrderBy(state, action);
         case 'ADD_RESTAURANT':
             return addRestaurant(state, action);
+        case 'REMOVE_RESTAURANT':
+            return removeRestaurant(state, action);
         default:
             return state;
     }

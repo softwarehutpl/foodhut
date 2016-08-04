@@ -31,10 +31,10 @@ function dispatchToProps(dispatch) {
                     return getRestaurants();
                 })
                 .catch((error) => {
-                    // restore original restaurants array
-                    // this.setState({
-                    //     restaurants: _.sortBy(restaurants, this.state.orderBy),
-                    // });
+                    dispatch({
+                        type: 'REMOVE_RESTAURANT',
+                        restaurantId: restaurant.id
+                    });                    
                     console.log(`Add restaurant error: ${error}`);
                 })
             ;
@@ -52,11 +52,7 @@ function dispatchToProps(dispatch) {
                  dispatch(Object.assign({}, {field}, {
                     type: 'CHANGE_ORDER_BY',
                     orderBy: field
-                }));
-                // this.setState({
-                //     restaurants: _.sortBy(this.state.restaurants, field),
-                //     orderBy: field
-                // });            
+                }));                    
             }
            
         }
@@ -67,8 +63,10 @@ function dispatchToProps(dispatch) {
  * Retrive restaurants via Syncano API
  */
 function getRestaurants() {
-   RestaurantSyncanoService
-        .getActiveRestaurants()
+    const currentState = RestaurantStore.getState();
+
+    RestaurantSyncanoService
+        .getActiveRestaurants(currentState.orderBy)
         .then((restaurants) => {
             return RestaurantStore.dispatch({
                 type: 'REFRESH_LIST',
