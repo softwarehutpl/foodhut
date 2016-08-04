@@ -40,9 +40,13 @@ export default class OrderService extends BaseService {
 
     /**
      * fetches orders
+     * @param {Number} id
      * @return {Promise}
      */
     getOrders() {
-        return this.fetchList(this.constant.orderClass);
+        var query = {
+            name: this.constant.orderClass
+        }
+        return this.fetchList(query);
     }
 }
