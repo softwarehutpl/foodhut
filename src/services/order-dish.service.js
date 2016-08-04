@@ -20,6 +20,7 @@ export default class OrderDishService extends BaseService {
      */
     addOrderDish(dish) {
         dish.className = this.constant.orderDishesClass;
+        
         return this.add(dish)
             .then(() => {
                 return this.$user.getUser(dish.user);
@@ -30,27 +31,17 @@ export default class OrderDishService extends BaseService {
             });
     }
 
-    /**
-     * adds new dish 
-     * @param {String} dishName
-     * @return {Promise}
-     */
-    addDish(dishName) {
-        var dish = {
-            dish_name: dishName,
-            className: this.constant.dishClass
-        };
-
-        return this.add(dish);
-    }
-
-    removeDish(id) {
-        var dish = {
-            id: id,
-            className: this.constant.orderDishesClass
-        }
-
-        return this.remove(dish);
+    removeOrderDish(dish) {
+        dish.className = this.constant.orderDishesClass;
+        
+        return this.remove(dish)
+            .then(() => {
+                return this.$user.getUser(dish.user.id);
+            })
+            .then(user => {
+                user.balance += dish.price;
+                return user.save();
+            });
     }
 
     /**
@@ -62,7 +53,7 @@ export default class OrderDishService extends BaseService {
             id: id,
             name: this.constant.orderDishesClass
         };
-
+        
         return this.fetchList(query);
     }
 }

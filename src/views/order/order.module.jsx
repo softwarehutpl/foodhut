@@ -49,14 +49,15 @@ function dispatchToProps(dispatch) {
 					fetchAccount();
 				});
 		},
-		removeDish: function removeDish(id) {
+		removeDish: function removeDish(dish) {
 			dispatch({
 				type: 'REMOVE_DISH',
-				id: id,
+				id: dish.id,
 			});
-			orderDishService.removeDish(id)
+			orderDishService.removeOrderDish(dish)
 				.then(()=>{
 					fetchDishes();
+					fetchAccount();
 				});
 		}
 	};

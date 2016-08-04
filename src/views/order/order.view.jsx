@@ -4,7 +4,9 @@ import $user from '../../services/user.service.js';
 class AccountBalance extends React.Component {
 	render() {
 		return (<div>
-			<span>Your balance:</span>
+			<span>Welcome </span>
+			{this.props.account.username}
+			<span> Your balance:</span>
 			{this.props.account.balance}
 		</div>);
 	}
@@ -13,10 +15,10 @@ class AccountBalance extends React.Component {
 class OrderDish extends React.Component {
 	render() {
 		return (<div>
-			{this.props.orderDish.user.name},
+			{this.props.orderDish.user.username},
 			{this.props.orderDish.name},
 			{this.props.orderDish.price},
-			<button onClick={()=>this.props.removeDish(this.props.orderDish.id)}>Remove</button>
+			<button onClick={()=>this.props.removeDish(this.props.orderDish)}>Remove</button>
 			{this.props.orderDish.fresh}
 		</div>);
 	}
