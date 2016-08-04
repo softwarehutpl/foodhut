@@ -3,7 +3,6 @@ import { Provider, connect } from 'react-redux';
 import OrderView from './order.view.jsx';
 import OrderStore from './order.store.js';
 import $orderDish from '../../services/order-dish.service.js';
-import $user from '../../services/user.service.js';
 import $test from '../../services/test.service.js';
 import MOCK from '../../mock.js';
 
@@ -13,7 +12,6 @@ import MOCK from '../../mock.js';
 // czytanie z autocomplete'a
 // usuwanie swojego zamowienia
 
-var userService = new $user();
 var orderDishService = new $orderDish();
 var testService = new $test();
 
