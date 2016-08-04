@@ -1,5 +1,8 @@
 function initData(state, action) {
-    return Object.assign({}, state, { orderDishes: action.orderDishes });
+    return Object.assign({}, state, { 
+        account: state.account, 
+        orderDishes: action.orderDishes 
+    });
 }
 
 function add(state, action) {
@@ -12,18 +15,33 @@ function add(state, action) {
         fresh: 'NOT ON A SERVER YET',
     });
 
-    return Object.assign({}, state, { orderDishes: orderDishes });
+    return Object.assign({}, state, { 
+        account: state.account, 
+        orderDishes: orderDishes });
+}
+
+function initAccount(state, action) {
+    let orderDishes = [].concat(state.orderDishes);
+
+    return Object.assign({}, state, {
+        account: action.account,
+        orderDishes: orderDishes
+    });
 }
 
 function reduce(state, action) {
-    let newState = state || { orderDishes: [] };
+    let newState = state || { account: { balance: 0 }, orderDishes: [] };
 
-    if(action.type === 'INIT_DATA') {
-    	return initData(newState, action);
+    if (action.type === 'INIT_DATA') {
+        return initData(newState, action);
     }
 
-    if(action.type === 'ADD_DISH') {
-    	return add(newState, action);
+    if (action.type === 'ADD_DISH') {
+        return add(newState, action);
+    }
+
+    if (action.type === 'INIT_USER_PROFILE') {
+        return initAccount(newState, action);
     }
 
     return newState;

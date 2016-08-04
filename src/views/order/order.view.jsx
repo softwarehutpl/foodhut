@@ -1,6 +1,15 @@
 import React from 'react';
 import $user from '../../services/user.service.js';
 
+class AccountBalance extends React.Component {
+	render() {
+		return (<div>
+			<span>Your balance:</span>
+			{this.props.account.balance}
+		</div>);
+	}
+}
+
 class OrderDish extends React.Component {
 	render() {
 		return (<div>
@@ -15,8 +24,7 @@ class OrderDish extends React.Component {
 class DishAdder extends React.Component {
 	constructor() {
 		super();
-		var userService = new $user();
-		$user.get
+
 		this.state = {
 			dishName: '',
 			price: 0
@@ -45,6 +53,8 @@ class DishAdder extends React.Component {
 
 class OrderView extends React.Component {
 	render(){
+		console.log('BEGIN OF RENDER',this.props.addDish, 'USER PROFILE', this.props.account, 'order dsihes', this.props.orderDishes);
+
 		let orderDishesArray = this.props.orderDishes.map((orderDish, i) => {
 			return <OrderDish orderDish={orderDish} key={i}/>
 		});
@@ -52,6 +62,7 @@ class OrderView extends React.Component {
 		orderDishesArray = <div>{orderDishesArray}</div>;
 
 		return (<div>
+			<AccountBalance account={this.props.account} />
 			<DishAdder addDish={this.props.addDish} />
 			{orderDishesArray}
 		</div>);
