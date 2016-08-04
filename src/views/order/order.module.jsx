@@ -34,16 +34,19 @@ function storeToProps(store) {
 
 function dispatchToProps(dispatch) {
 	return {
-		addDish: function addDish(dishName, price) {
+		addDish: function addDish(dish) {
 			dispatch({
 				type: 'ADD_DISH',
 				user: { name: USER.name},
-				name: dishName,
-				price: price,
+				name: dish.name,
+				price: dish.price,
 			});
-			orderDishService.addOrderDish(dishName, price, MOCK.ORDER_id, MOCK.USER_ID)
+			dish.order = MOCK.ORDER_ID;
+			dish.user = MOCK.USER_ID;
+			orderDishService.addOrderDish(dish)
 				.then(() => {
 					fetchDishes();
+					fetchAccount();
 				});
 		},
 		removeDish: function removeDish(id) {

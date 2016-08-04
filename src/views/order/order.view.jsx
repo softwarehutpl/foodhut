@@ -27,16 +27,16 @@ class DishAdder extends React.Component {
 		super();
 
 		this.state = {
-			dishName: '',
+			name: '',
 			price: 0
 		};
 
-		this.setDishName = this.setDishName.bind(this);
+		this.setName = this.setName.bind(this);
 		this.setPrice = this.setPrice.bind(this);
 	}
 
-	setDishName(e) {
-		this.setState({dishName: e.target.value});
+	setName(e) {
+		this.setState({name: e.target.value});
 	}
 
 	setPrice(e) {
@@ -45,9 +45,9 @@ class DishAdder extends React.Component {
 
 	render() {
 		return (<div>
-			<input value={this.state.dishName} onChange={this.setDishName}/>
+			<input value={this.state.name} onChange={this.setName}/>
 			<input value={this.state.price} onChange={this.setPrice} type="number" />
-			<button onClick={()=>this.props.addDish(this.state.dishName, this.state.price)}>Add</button>
+			<button onClick={()=>this.props.addDish(this.state)}>Add</button>
 		</div>);
 	}
 }

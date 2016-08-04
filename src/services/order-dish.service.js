@@ -1,4 +1,5 @@
 import BaseService from './base.service.js';
+import UserService from './user.service.js';
 
 export default class OrderDishService extends BaseService {
     /*
@@ -6,6 +7,7 @@ export default class OrderDishService extends BaseService {
      */
     constructor() {
         super();
+        this.$user = new UserService;
     }
 
     /**
@@ -16,16 +18,16 @@ export default class OrderDishService extends BaseService {
      * @param {Number} userId
      * @return {Promise}
      */
-    addOrderDish(name, price, orderId, userId) {
-        var orderDish = {
-            name: name,
-            price: price,
-            order: orderId,
-            user: userId,
-            className: this.constant.orderDishesClass
-        };
-
-        return this.add(orderDish);
+    addOrderDish(dish) {
+        dish.className = this.constant.orderDishesClass;
+        return this.add(dish)
+            .then(() => {
+                return this.$user.getUser(dish.user);
+            })
+            .then(user => {
+                user.balance -= dish.price;
+                return user.save();
+            });
     }
 
     /**
