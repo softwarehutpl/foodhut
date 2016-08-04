@@ -20,7 +20,7 @@ export default class OrderDishService extends BaseService {
      */
     addOrderDish(dish) {
         dish.className = this.constant.orderDishesClass;
-        
+
         return this.add(dish)
             .then(() => {
                 return this.$user.getUser(dish.user);
@@ -28,12 +28,19 @@ export default class OrderDishService extends BaseService {
             .then(user => {
                 user.balance -= dish.price;
                 return user.save();
+            })
+            .then(() => {
+                var autocomplete = {
+                    dish_name: dish.name,
+                    className: this.constant.dishAutocompleteClass
+                };
+                return this.add(autocomplete);
             });
     }
 
     removeOrderDish(dish) {
         dish.className = this.constant.orderDishesClass;
-        
+
         return this.remove(dish)
             .then(() => {
                 return this.$user.getUser(dish.user.id);
@@ -53,7 +60,7 @@ export default class OrderDishService extends BaseService {
             id: id,
             name: this.constant.orderDishesClass
         };
-        
+
         return this.fetchList(query);
     }
 }
