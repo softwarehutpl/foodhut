@@ -22,22 +22,33 @@ function storeToProps(store) {
 function dispatchToProps(dispatch) {
     return {
         selectOrder: function selectOrder(id) {
+            console.log("order selected");
+            
+        },
+        selectRestaurant: function selectRestaurant(id) {
+
+            console.log("id");
+            console.log(id);
             dispatch({
                 type: 'SELECT_ORDER',
                 elementId: id,
             });
 
-            const query = {
-                id: id,
+
+            var order = {
+                is_closed: false,
+                restaurant: id,
                 instanceName: config.instanceName,
                 className: 'orders',
+                price: 0,
             };
+
 
             DataObject
                 .please()
-                .create(element)
-                .then(function(element) {
-                    console.log("element created", element);
+                .create(order)
+                .then(function(order) {
+                    console.log("order created", order);
                     refetch();
                 });
             
@@ -59,8 +70,10 @@ function refetch() {
                     let orders = dataObjects.objects.map((orderElement, i) => {
                         restaurants = restaurants.map((restaurantElement, i) => {
                             restaurantElement.ordered = false;
+                            restaurantElement.orders = [];
                             if(orderElement.restaurant.value===restaurantElement.id) {
                                 restaurantElement.ordered = true;
+                                restaurantElement.orders.push(orderElement);
                             }
 
                             return restaurantElement;
@@ -68,6 +81,10 @@ function refetch() {
 
                         return orderElement;
                     });
+                    console.log("orders");
+                    console.log(orders);
+                    console.log("restaurants");
+                    console.log(restaurants);
                     FirstScreenStore.dispatch({
                         type: 'INIT_DATA',
                         restaurants: restaurants,

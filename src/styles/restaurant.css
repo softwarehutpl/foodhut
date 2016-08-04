@@ -1,0 +1,25 @@
+.restaurantForm input {
+	margin-bottom: 18px;
+}
+
+input.ui-input_state_invalid {
+	border:1px red solid;
+	background-color: #FFD4D4;
+}
+
+.restaurantList table {
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+.restaurantList table, .restaurantList th, .restaurantList td {
+    border: 1px solid black;
+}
+
+.restaurantList th, .restaurantList td {
+	padding:2px;
+}
+
+.restaurantList th.sortable {
+	cursor:pointer;
+}

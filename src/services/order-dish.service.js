@@ -1,6 +1,9 @@
 import BaseService from './base.service.js';
 
-export default class OrderDishesService extends BaseService {
+export default class OrderDishService extends BaseService {
+    /*
+     * constructor
+     */
     constructor() {
         super();
     }
@@ -13,7 +16,7 @@ export default class OrderDishesService extends BaseService {
      * @param {Number} userId
      * @return {Promise}
      */
-    addOrderDish(namne, price, orderId, userId) {
+    addOrderDish(name, price, orderId, userId) {
         var orderDish = {
             name: name,
             price: price,
@@ -37,5 +40,18 @@ export default class OrderDishesService extends BaseService {
         };
 
         return this.add(dish);
+    }
+
+    /**
+     * fetches all order dishes
+     * @return {Promise}
+     */
+    getOrderDishes(id) {
+        var query = {
+            id: id,
+            name: this.constant.orderDishesClass
+        };
+
+        return this.fetchList(query);
     }
 }

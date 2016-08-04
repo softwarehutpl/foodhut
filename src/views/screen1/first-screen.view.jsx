@@ -1,6 +1,6 @@
 import React from 'react';
 
-class RestaurantElement extends React.Component {
+class OrderElement extends React.Component {
     render() {
         return (<div className="box">
             {this.props.elementObject.name}<br/>
@@ -9,6 +9,16 @@ class RestaurantElement extends React.Component {
         </div>);
     }
 }
+class RestaurantElement extends React.Component {
+    render() {
+        return (<div className="box">
+            {this.props.elementObject.name}<br/>
+            {this.props.elementObject.menu_link}<br/>
+            <button onClick={() => this.props.selectRestaurant(this.props.elementObject.id)}>Wybierz</button>
+        </div>);
+    }
+}
+
 
 
 
@@ -20,13 +30,13 @@ class RestaurantView extends React.Component {
         console.info("RENDER", this.props);
         let activeRestaurants = this.props.restaurants.map((element, i) => {        
             if(!element.ordered){
-                return <RestaurantElement selectOrder={this.props.selectOrder} elementObject={element} key={i}/>;
+                return <OrderElement selectOrder={this.props.selectOrder} elementObject={element} key={i}/>;
             }
         });
         activeRestaurants = <div>{activeRestaurants}</div>;
         let newRestaurants = this.props.restaurants.map((element, i) => {
             if(element.ordered){
-                return <RestaurantElement selectOrder={this.props.selectOrder} elementObject={element} key={i}/>;
+                return <RestaurantElement selectRestaurant={this.props.selectRestaurant} elementObject={element} key={i}/>;
             }
         });
         newRestaurants = <div>{newRestaurants}</div>;
