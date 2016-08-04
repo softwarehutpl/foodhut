@@ -9,7 +9,7 @@ import $test from '../../services/test.service.js';
 import MOCK from '../../mock.js';
 
 // TODO:
-// account balance
+// account balance DONE
 // zapisywanie autocomplete'a
 // czytanie z autocomplete'a
 // usuwanie swojego zamowienia
@@ -46,6 +46,16 @@ function dispatchToProps(dispatch) {
 					fetchDishes();
 				});
 		},
+		removeDish: function removeDish(id) {
+			dispatch({
+				type: 'REMOVE_DISH',
+				id: id,
+			});
+			orderDishService.removeDish(id)
+				.then(()=>{
+					fetchDishes();
+				});
+		}
 	};
 }
 
@@ -56,6 +66,7 @@ function fetchDishes() {
 				type: 'INIT_DATA',
 				orderDishes: orderDishes.objects.map(orderDish=>{
 					return	{
+						id: orderDish.id,
 						dishName: orderDish.name,
 						price: orderDish.price,
 						userName: orderDish.user.name,

@@ -42,6 +42,15 @@ export default class OrderDishService extends BaseService {
         return this.add(dish);
     }
 
+    removeDish(id) {
+        var dish = {
+            id: id,
+            className: this.constant.orderDishesClass
+        }
+
+        return this.remove(dish);
+    }
+
     /**
      * fetches all order dishes
      * @return {Promise}

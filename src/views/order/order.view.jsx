@@ -17,6 +17,7 @@ class OrderDish extends React.Component {
 			{this.props.orderDish.dishName},
 			{this.props.orderDish.price},
 			{this.props.orderDish.fresh}
+			<button onClick={()=>this.props.removeDish(this.props.orderDish.id)}>Remove</button>
 		</div>);
 	}
 }
@@ -53,10 +54,8 @@ class DishAdder extends React.Component {
 
 class OrderView extends React.Component {
 	render(){
-		console.log('BEGIN OF RENDER',this.props.addDish, 'USER PROFILE', this.props.account, 'order dsihes', this.props.orderDishes);
-
 		let orderDishesArray = this.props.orderDishes.map((orderDish, i) => {
-			return <OrderDish orderDish={orderDish} key={i}/>
+			return <OrderDish orderDish={orderDish} key={i} removeDish={this.props.removeDish}/>
 		});
 
 		orderDishesArray = <div>{orderDishesArray}</div>;
