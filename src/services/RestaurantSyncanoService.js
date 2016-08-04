@@ -34,7 +34,7 @@ export default class RestaurantSyncanoService {
 	 * 	 
 	 * @return {DataObject}
 	 */
-	static getActiveRestaurants(orderBy, orderDirection = 'asc') {
+	static getActiveRestaurants(orderBy = 'name', orderDirection = 'asc') {
 		return connection.DataObject
             .please()
             .list()    

@@ -30,8 +30,8 @@ export default class RestaurantForm extends React.Component {
     getInitialStateObject() {
         return {
             name: '',
-            menuLink: '',
-            packageCost: ''
+            menuLink: null,
+            packageCost: null
         };
     }
 
