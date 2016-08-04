@@ -3,8 +3,8 @@ import React from 'react';
 class TestElement extends React.Component {
     render() {
         return (<div>
-            {this.props.elementObject.elementName},
-            {this.props.elementObject.elementValue},
+            {this.props.elementObject.name},
+            {this.props.elementObject.menu_link},
             <button onClick={() => this.props.removeElement(this.props.elementObject.id)}>Delete</button>
         </div>);
     }
