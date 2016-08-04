@@ -1,23 +1,24 @@
 'use strict';
 function add(state, action) {
-    let elements = [].concat(state.elements);
+    let restaurants = [].concat(state.restaurants);
 
-    elements.push({
-        elementName: action.elementName,
-        elementValue: action.elementValue,
+    restaurants.push({
+        name: action.name,
+        menu_link: action.menu_link,
+        active: action.active,
     });
 
-    return Object.assign({}, state, { elements: elements });
+    return Object.assign({}, state, { restaurants: restaurants });
 }
 
 function initdata(state, action) {
-    return Object.assign({}, state, { elements: action.elements });
+    return Object.assign({}, state, { restaurants: action.restaurants });
 }
 
 function reduce(state, action) {
-    let newState = state || { elements: [] };
+    let newState = state || { restaurants: [] };
 
-    if (action.type === 'ADD_ELEMENT') {
+    if (action.type === 'SELECT_ORDER') {
         return add(newState, action);
     }
 

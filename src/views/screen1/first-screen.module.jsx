@@ -12,25 +12,25 @@ var DataEndpoint = connection.DataEndpoint;
 var DataObject = connection.DataObject;
 
 function storeToProps(store) {
+    console.log("elements: store.elements");
+    // console.log(store.elements);
     return {
-        elements: store.elements,
+        restaurants: store.restaurants,
     };
 }
 
 function dispatchToProps(dispatch) {
     return {
-        addElement: function addElement(name, val) {
+        selectOrder: function selectOrder(id) {
             dispatch({
-                type: 'ADD_ELEMENT',
-                elementName: name,
-                elementValue: val,
+                type: 'SELECT_ORDER',
+                elementId: id,
             });
 
-            var element = {
-                elementName: name,
-                elementValue: val,
+            const query = {
+                id: id,
                 instanceName: config.instanceName,
-                className: 'restaurants',
+                className: 'orders',
             };
 
             DataObject
@@ -40,28 +40,7 @@ function dispatchToProps(dispatch) {
                     console.log("element created", element);
                     refetch();
                 });
-
-
-        },
-        removeElement: function removeElement(id) {
-            dispatch({
-                type: 'REMOVE_ELEMENT',
-                elementId: id,
-            });
-
-            const query = {
-                id: id,
-                instanceName: config.instanceName,
-                className: 'restaurants',
-            };
-
-            DataObject
-                .please()
-                .delete(query)
-                .then(function(element) {
-                    console.log("element deleted", id);
-                    refetch();
-                });
+            
         },
     };
 }
@@ -72,12 +51,34 @@ function refetch() {
         .please()
         .fetchData({name: 'restaurants', instanceName: config.instanceName})
         .then(function success(dataObjects) {
-            console.info("data", dataObjects.objects);
-            FirstScreenStore.dispatch({
-                type: 'INIT_DATA',
-                elements: dataObjects.objects,
-            });
+            let restaurants = dataObjects.objects;
+            DataEndpoint
+                .please()
+                .fetchData({name: 'orders', instanceName: config.instanceName})
+                .then(function success(dataObjects) {
+                    let orders = dataObjects.objects.map((orderElement, i) => {
+                        restaurants = restaurants.map((restaurantElement, i) => {
+                            restaurantElement.ordered = false;
+                            if(orderElement.restaurant.value===restaurantElement.id) {
+                                restaurantElement.ordered = true;
+                            }
+
+                            return restaurantElement;
+                        });
+
+                        return orderElement;
+                    });
+                    FirstScreenStore.dispatch({
+                        type: 'INIT_DATA',
+                        restaurants: restaurants,
+                    });
+                });
+
+
+
         });
+    
+
 }
 
 let FirstScreen = connect(storeToProps, dispatchToProps)(FirstScreenView);

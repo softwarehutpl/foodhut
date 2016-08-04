@@ -1,59 +1,50 @@
 import React from 'react';
 
-class TestElement extends React.Component {
+class RestaurantElement extends React.Component {
     render() {
-        return (<div>
-            {this.props.elementObject.name},
-            {this.props.elementObject.menu_link},
-            <button onClick={() => this.props.removeElement(this.props.elementObject.id)}>Delete</button>
+        return (<div className="box">
+            {this.props.elementObject.name}<br/>
+            {this.props.elementObject.menu_link}<br/>
+            <button onClick={() => this.props.selectOrder(this.props.elementObject.id)}>Wybierz</button>
         </div>);
     }
 }
 
-class TestAdder extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            name: '',
-            menu_link: 'https://'
-        };
 
-        this.setName = this.setName.bind(this);
-        this.setMenuLink = this.setMenuLink.bind(this);
-    }
-    setName(e) {
-        this.setState({name: e.target.value});
-    }
-    setMenuLink(e) {
-        this.setState({menu_link: e.target.value});
-    }
-    render() {
-        return (
-            <div>
-                <input value={this.state.name} onChange={this.setName}/>
-                <input value={this.state.menu_link} onChange={this.setMenuLink}/>
-                <button onClick={() => this.props.addElement(this.state.name, this.state.menu_link)}>Add</button>
-            </div>);
-    }
-}
 
-class TestView extends React.Component {
+class RestaurantView extends React.Component {
     constructor() {
         super();
     }
     render() {
         console.info("RENDER", this.props);
-        let elementsArray = this.props.elements.map((element, i) => {
-            return <TestElement removeElement={this.props.removeElement} elementObject={element} key={i}/>;
+        let activeRestaurants = this.props.restaurants.map((element, i) => {        
+            if(!element.ordered){
+                return <RestaurantElement selectOrder={this.props.selectOrder} elementObject={element} key={i}/>;
+            }
         });
+        activeRestaurants = <div>{activeRestaurants}</div>;
+        let newRestaurants = this.props.restaurants.map((element, i) => {
+            if(element.ordered){
+                return <RestaurantElement selectOrder={this.props.selectOrder} elementObject={element} key={i}/>;
+            }
+        });
+        newRestaurants = <div>{newRestaurants}</div>;
 
-        elementsArray = <div>{elementsArray}</div>;
-
-        return (<div>
-            {elementsArray}
-            <TestAdder addElement={this.props.addElement} />
-        </div>);
+        return (
+            <div className="container">
+                <h1>FOOD <span>HUT</span></h1>
+                <h3>Aktywne Zamówienia:</h3>
+                <div className="restaurantContainer">
+                    {activeRestaurants}
+                </div>
+                <h3>Nowe Zamówienie:</h3>
+                <div className="restaurantContainer">
+                    {newRestaurants}
+                </div>
+            </div>
+        );
     }
 }
 
-export default TestView;
+export default RestaurantView;
