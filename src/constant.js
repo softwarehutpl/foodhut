@@ -3,6 +3,7 @@ export default {
     orderClass: 'orders',
     restauranClass: 'restaurants',
     orderDishesClass: 'order_dishes',
-    dishClass: 'dishes_autocomplete ',
+    dishAutocompleteClass: 'dishes_autocomplete ',
     userClass: 'user_profile',
+
 };

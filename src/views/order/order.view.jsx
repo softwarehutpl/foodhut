@@ -1,12 +1,24 @@
 import React from 'react';
 import $user from '../../services/user.service.js';
 
+class AccountBalance extends React.Component {
+	render() {
+		return (<div>
+			<span>Welcome </span>
+			{this.props.account.username}
+			<span> Your balance:</span>
+			{this.props.account.balance}
+		</div>);
+	}
+}
+
 class OrderDish extends React.Component {
 	render() {
 		return (<div>
-			{this.props.orderDish.userName},
-			{this.props.orderDish.dishName},
+			{this.props.orderDish.user.username},
+			{this.props.orderDish.name},
 			{this.props.orderDish.price},
+			<button onClick={()=>this.props.removeDish(this.props.orderDish)}>Usuń</button>
 			{this.props.orderDish.fresh}
 		</div>);
 	}
@@ -15,19 +27,18 @@ class OrderDish extends React.Component {
 class DishAdder extends React.Component {
 	constructor() {
 		super();
-		var userService = new $user();
-		$user.get
+
 		this.state = {
-			dishName: '',
+			name: '',
 			price: 0
 		};
 
-		this.setDishName = this.setDishName.bind(this);
+		this.setName = this.setName.bind(this);
 		this.setPrice = this.setPrice.bind(this);
 	}
 
-	setDishName(e) {
-		this.setState({dishName: e.target.value});
+	setName(e) {
+		this.setState({name: e.target.value});
 	}
 
 	setPrice(e) {
@@ -36,24 +47,28 @@ class DishAdder extends React.Component {
 
 	render() {
 		return (<div>
-			<input value={this.state.dishName} onChange={this.setDishName}/>
+			<input value={this.state.name} onChange={this.setName}/>
 			<input value={this.state.price} onChange={this.setPrice} type="number" />
-			<button onClick={()=>this.props.addDish(this.state.dishName, this.state.price)}>Add</button>
+			<button onClick={()=>this.props.addDish(this.state)}>Dodaj</button>
 		</div>);
 	}
 }
 
 class OrderView extends React.Component {
 	render(){
+		let total = 0;
 		let orderDishesArray = this.props.orderDishes.map((orderDish, i) => {
-			return <OrderDish orderDish={orderDish} key={i}/>
+			total +=orderDish.price;
+			return <OrderDish orderDish={orderDish} key={i} removeDish={this.props.removeDish}/>
 		});
 
 		orderDishesArray = <div>{orderDishesArray}</div>;
 
 		return (<div>
+			<AccountBalance account={this.props.account} />
 			<DishAdder addDish={this.props.addDish} />
 			{orderDishesArray}
+			Kwota: {total}
 		</div>);
 	}
 }
