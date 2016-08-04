@@ -12,7 +12,7 @@ var DataEndpoint = connection.DataEndpoint;
 var DataObject = connection.DataObject;
 
 // 1) Naprawić wyczajanie relacji restauracje<->ordery
-// *) Mozna skorzystac z łączenia promisów
+// *) Mozna skorzystac z łączenia promisów (Promise.all())
 // 2) Wprowadzic route'y do przechodzenia na order
 // Zadanie z gwiazdką:) Jeśli zamówienie jest tworzone przeze mnie, mały "X" na górze do kasowania go z bazy
 
