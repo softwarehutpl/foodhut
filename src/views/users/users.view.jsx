@@ -14,9 +14,10 @@ var connection = Syncano({
 
 var User = connection.User;
 
-var DataObject = connection.DataObject; 
+var DataObject = connection.DataObject;
 
 // TODO:
+// USER <-> USER PROFILE
 // w syncano dodac hasla
 // edycja hasel
 // edycja balansu kasy konta hajsu $$
@@ -171,7 +172,7 @@ class Users extends React.Component {
 	render() {
 		return (
 			<div>
-				<Header/>	
+				<Header/>
 				<h3>Lista ludzi:</h3>
 				<UserList users={this.state.users}/>
 				<h4>Dodaj użytkownika:</h4>

@@ -5,6 +5,8 @@ import RestaurantsPage from "./RestaurantsPage.jsx";
 import RestaurantStore from "./store.js";
 import RestaurantList from './list.jsx';
 
+// TODO:
+// routing
 
 function stateToProps(state) {
     return {
@@ -17,10 +19,10 @@ function dispatchToProps(dispatch) {
     return {
         /**
          * Handle adding restauration
-         * 
+         *
          * @param  {String} field
          */
-        addRestaurant: function addRestaurant(restaurant) {          
+        addRestaurant: function addRestaurant(restaurant) {
             dispatch(Object.assign({}, restaurant, {
                 type: 'ADD_RESTAURANT'
             }));
@@ -34,7 +36,7 @@ function dispatchToProps(dispatch) {
                     dispatch({
                         type: 'REMOVE_RESTAURANT',
                         restaurantId: restaurant.id
-                    });                    
+                    });
                     console.log(`Add restaurant error: ${error}`);
                 })
             ;
@@ -42,7 +44,7 @@ function dispatchToProps(dispatch) {
         },
         /**
          * Handle order by change
-         * 
+         *
          * @param  {String} field
          */
         changeOrderBy: function(field) {
@@ -52,9 +54,9 @@ function dispatchToProps(dispatch) {
                  dispatch(Object.assign({}, {field}, {
                     type: 'CHANGE_ORDER_BY',
                     orderBy: field
-                }));                    
+                }));
             }
-           
+
         }
     };
 }
