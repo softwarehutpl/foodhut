@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import _ from 'lodash';
+
 // TODO:
 // USER <-> USER PROFILE
 // w syncano dodac hasla
@@ -22,13 +24,7 @@ class Header extends React.Component {
 class SingleUser extends React.Component {
 	render() {
 		return (
-			<tr>
-				<td> <input value={ this.props.user.username } /> </td>
-				<td> <input placeholder="new password" value={ this.props.user.password } /> </td>
-				<td> <input value={ this.props.user.profile.balance } /></td>
-				<td> <input type="checkbox" checked={ this.props.user.profile.is_admin } /></td>
-				<td><button>save</button></td>
-			</tr>
+			<UserForm user={this.props.user} updateUser={this.props.updateUser} />
 		)
 	}
 }
@@ -37,7 +33,7 @@ class UserList extends React.Component {
   	render() {
   		var usersNodes = this.props.users.map( (user, i) => {
 			return 	(
-				<SingleUser key={i} user={user} />
+				<SingleUser key={i} user={user} updateUser={this.props.updateUser} />
 			);
 		});
   		return (
@@ -61,13 +57,7 @@ class UserList extends React.Component {
 class UserForm extends React.Component {
 	constructor (props) {
 		super(props);
-
-		this.state = {
-			username: '',
-			password: '',
-			is_admin: false,
-			balance: 0,
-		}
+		this.state = this.props.user;
 
 		this.setName = this.setName.bind(this);
 		this.setPassword = this.setPassword.bind(this);
@@ -86,75 +76,109 @@ class UserForm extends React.Component {
 		});
 	}
 	setBalance(e) {
-		this.setState({
-			balance: e.target.value
-		});
+		this.setState(_.merge({}, this.state, {
+			profile: {
+				balance: e.target.value,
+			}
+		}));
 	}
 	setIsAdmin(e) {
-		console.log('setisadmin',e.target.checked );
-		this.setState({
-			is_admin: e.target.checked
-		});
+		this.setState(_.merge({}, this.state, {
+			profile: {
+				is_admin: e.target.checked,
+			}
+		}));
 	}
 	render() {
+		let button = {};
+		if(typeof this.props.addUser !== 'undefined') {
+			button = (<button onClick={()=> {
+				        	this.props.addUser(this.state);
+							this.state = {
+								username: '',
+								password: '',
+								profile: {
+									is_admin: false,
+									balance: 0
+								}
+							};
+				        }}>
+			        	Add user
+			       	</button>)
+		} else if(typeof this.props.updateUser !== 'undefined') {
+			button = (<button onClick={()=> {
+				        	this.props.updateUser(this.state);
+				        	_.merge(this.state, this.state, {
+				        		password: null
+				        	});
+				        }}>
+			        	Update user
+			       	</button>)
+		}
 		return (
-			<div className="add-user">
-
-				<input
-					type="text"
-					placeholder="User name"
-					value={this.state.username}
-					onChange={this.setName}
-		        />
-		        <input
-					type="password"
-					placeholder="Password"
-					value={this.state.password}
-					onChange={this.setPassword}
-		        />
-		        <input
-					type="text"
-					placeholder="User balance"
-					value={this.state.balance}
-					onChange={this.setBalance}
-		        />
-		        <label>Is admin</label>
-		        <input
-					type="checkbox"
-					checked={this.state.is_admin}
-					onChange={this.setIsAdmin}
-		        />
-		        <button type="button" onClick={()=> {
-		        	this.props.addUser(
-					this.state.username, 
-					this.state.password, 
-					this.state.is_admin, 
-					this.state.balance
-					);
-					this.state = {
-						username: '',
-						password: '',
-						is_admin: false,
-						balance: 0,
-					};
-		        }}>
-		        	Add user
-		       	</button>
-			</div>
+			<tr className="add-user">
+				<td>
+					<input
+						type="text"
+						placeholder="User name"
+						value={this.state.username}
+						onChange={this.setName}
+			        />
+		        </td>
+		        <td>
+			        <input
+						type="password"
+						placeholder="Password"
+						value={this.state.password}
+						onChange={this.setPassword}
+			        />
+			    </td>
+		        <td>
+			        <input
+						type="text"
+						placeholder="User balance"
+						value={this.state.profile.balance}
+						onChange={this.setBalance}
+			        />
+			    </td>
+		        <td>
+			        <label>Is admin</label>
+			        <input
+						type="checkbox"
+						checked={this.state.profile.is_admin}
+						onChange={this.setIsAdmin}
+			        />
+			    </td>
+			    <td>
+			    	{button}
+		       	</td>
+			</tr>
 		)
 	}
 }
 
 class UsersView extends React.Component {
 	render() {
+		let user = {
+			username: '',
+			password: '',
+			profile: {
+				is_admin: false,
+				balance: 12
+			}
+		}
 
 		return (
 			<div>
 				<Header/>
 				<h3>Lista ludzi:</h3>
-				<UserList users={this.props.users}/>
+				<UserList users={this.props.users} updateUser={this.props.updateUser}/>
 				<h4>Dodaj użytkownika:</h4>
-				<UserForm addUser={this.props.addUser}/>
+				<table>
+					<tbody>
+						<UserForm user={user} addUser={this.props.addUser}/>
+					</tbody>
+				</table>
 			</div>
 		)
 	}

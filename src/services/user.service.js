@@ -24,19 +24,28 @@ export default class UserService extends BaseService {
 
     addUser(user) {
         let apiUser = this.connection.User;
-        var options = {
-            username: user.username,
-            password: user.password,
-            profile: {
-                is_admin: user.is_admin,
-                balance: user.balance
-            }
-        };
 
-        return apiUser.please().create(options);
+        return apiUser.please().create(user);
     }
 
     getUsers() {
         return this.connection.Instance().users().list();
+    }
+
+    updateUser(user) {
+        let apiUser = this.connection.User;
+
+        var query = {instanceName: this.constant.instanceName, id: user.id};
+        var update = {
+            username: user.username, 
+            password: user.password, 
+            profile: {
+                balance: user.profile.balance,
+                is_admin: user.profile.is_admin,
+            }
+
+        };
+
+        return apiUser.please().update(query, update);
     }
 }

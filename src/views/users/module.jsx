@@ -14,24 +14,21 @@ function storeToProps(store) {
 
 function dispatchToProps(dispatch) {
 	return {
-		addUser: function addUser(username, password, is_admin, balance) {
-			console.log('invoke add user in module, is admin', is_admin);
+		addUser: function addUser(user) {
 			dispatch({
 				type: 'ADD_USER',
-				username: username,
-				password: password,
-				is_admin: is_admin,
-				balance: balance,
+				user: user,
 			});
-			let user = {
-				username: username,
-				password: password,
-				is_admin: is_admin,
-				balance: balance,
-			};
 
 			$user.addUser(user)
 				.then(() => {
+					fetchUsers();
+				});
+		},
+		updateUser: function updateUser(user) {
+			console.log('userrr', user);
+			$user.updateUser(user)
+				.then(()=>{
 					fetchUsers();
 				});
 		}

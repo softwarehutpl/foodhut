@@ -5,14 +5,7 @@ function initData(state, action) {
 function add(state, action) {
     let users = [].concat(state.users);
 
-    users.push({
-        username: action.username,
-        password: action.password,
-        profile: {
-            is_admin: action.is_admin,
-            balance: action.balance
-        },
-    });
+    users.push(action.user);
 
     return Object.assign({}, state, { users: users });
 }
