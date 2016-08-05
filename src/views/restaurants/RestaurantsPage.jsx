@@ -1,8 +1,8 @@
 'use strict';
 
 import React from 'react';
-import RestaurantList from './list.jsx';
-import RestaurantForm from './form.jsx';
+import RestaurantList from './RestaurantList';
+import RestaurantForm from './RestaurantForm';
 
 class RestaurantsPage extends React.Component {
   	render() {

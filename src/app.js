@@ -1,29 +1,18 @@
 'use strict';
+
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
+import { Provider } from "react-redux";
+import { Router, browserHistory } from 'react-router';
+import routes from './routes';
+import store from './store';
+
 import './styles/style.css';
+import './styles/restaurant.css';
 
-import UsersView from './views/users/module.jsx';
-ReactDOM.render(UsersView, document.querySelector('div'));
-
-// import Test from './views/test/test.module.jsx';
-// ReactDOM.render(Test, document.querySelector('div'));
-
-// import Order from './views/order/order.module.jsx';
-// ReactDOM.render(Order, document.querySelector('div'));
-
-// import './styles/restaurant.css';
-//import Restaurants from './views/restaurants/page.jsx';
-// ReactDOM.render(<Restaurants/>, document.querySelector('div'));
-// import Users from './views/users/users.view.jsx';
-
-// import FirstScreen from './views/screen1/first-screen.module.jsx';
-
-// import Test from './views/test/test.module.jsx';
-// ReactDOM.render(Test, document.querySelector('div'));
-
-// import Order from './views/order/order.module.jsx';
-// ReactDOM.render(Order, document.querySelector('div'));
-
-//ReactDOM.render(Users, document.querySelector('div'));
-
+render(
+	<Provider store={store}>
+    	<Router history={browserHistory} routes={routes} />
+    </Provider>,
+  	document.getElementById('app')
+);

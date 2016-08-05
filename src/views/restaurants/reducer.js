@@ -1,4 +1,4 @@
-import RestaurantList from './list.jsx';
+import RestaurantList from './RestaurantList';
 import _ from 'underscore';
 
 const initialState = {
@@ -24,7 +24,6 @@ function changeOrderBy(state, action) {
 }
 
 function addRestaurant(state, action) {
-    console.log(action);
     return Object.assign({}, state, {
         restaurants: _.sortBy([
             ...state.restaurants,

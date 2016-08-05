@@ -5,3 +5,13 @@ h3 { font-weight: 200; }
 .restaurantContainer { width: 100%; margin: 0 -5px; }
 .box { width: auto; height: 60px; display: inline-block; margin: 5px; border: 2px solid #F05122; padding: 20px; }
 h1 span[data-reactid=".0.0.1"] { color: #F05122; }
+
+a {
+	text-decoration: none;
+	color:blue;
+}
+
+a.active {
+	font-weight: bold;
+	color:green;
+}

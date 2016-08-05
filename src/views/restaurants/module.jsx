@@ -2,16 +2,13 @@ import React from 'react';
 import { Provider, connect } from "react-redux";
 import RestaurantSyncanoService from '../../services/RestaurantSyncanoService.js';
 import RestaurantsPage from "./RestaurantsPage.jsx";
-import RestaurantStore from "./store.js";
-import RestaurantList from './list.jsx';
-
-// TODO:
-// routing
+import RestaurantList from './RestaurantList';
+import Store from '../../store';
 
 function stateToProps(state) {
     return {
-        restaurants: state.restaurants,
-        orderBy: state.orderBy
+        restaurants: state.restaurant.restaurants,
+        orderBy: state.restaurant.orderBy
     };
 }
 
@@ -65,12 +62,13 @@ function dispatchToProps(dispatch) {
  * Retrive restaurants via Syncano API
  */
 function getRestaurants() {
-    const currentState = RestaurantStore.getState();
+    const currentState = Store.getState();
+    //console.log('getRestaurant current state', currentState);
 
     RestaurantSyncanoService
-        .getActiveRestaurants(currentState.orderBy)
+        .getActiveRestaurants(currentState.restaurant.orderBy)
         .then((restaurants) => {
-            return RestaurantStore.dispatch({
+            return Store.dispatch({
                 type: 'REFRESH_LIST',
                 restaurants
             });
@@ -81,7 +79,6 @@ function getRestaurants() {
     ;
 }
 
-const Restaurants = connect(stateToProps, dispatchToProps)(RestaurantsPage);
 getRestaurants();
 
-export default <Provider store={RestaurantStore}><Restaurants/></Provider>;
+export default connect(stateToProps, dispatchToProps)(RestaurantsPage);

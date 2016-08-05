@@ -1,17 +1,17 @@
 'use strict';
 
 import React, {PropTypes} from 'react';
-import Restaurant from './item.jsx';
+import RestaurantListRow from './RestaurantListRow';
 
 export default class RestaurantList extends React.Component {
 	constructor(props) {
-        super(props);
+        super(props);       
     }
 
   	render() {
   		const restaurantNodes = this.props.restaurants.map( restaurant => {
 			return 	(
-				<Restaurant key={restaurant.id ? restaurant.id : Date.now()} restaurant={restaurant} />
+				<RestaurantListRow key={restaurant.id ? restaurant.id : Date.now()} restaurant={restaurant} />
 			);
 		});
 
