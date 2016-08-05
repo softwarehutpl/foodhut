@@ -14,6 +14,7 @@
     "style-loader": "^0.13.1",
     "syncano": "^1.0.23",
     "underscore": "^1.8.3",
+    "validator": "^5.5.0",
     "webpack": "^1.13.1"
   },
   "devDependencies": {
