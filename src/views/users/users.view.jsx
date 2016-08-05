@@ -1,20 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Syncano from 'syncano';
 
-const node = document.querySelector('#content');
-
-var connection = Syncano({
-	apiKey: "4a76384d8137935042a557e020ace03382cdc755",
-	defaults: {
-		instanceName: "autumn-field-2134",
-		className: "user_profile"
-	}
-});
-
-var User = connection.User;
-
-var DataObject = connection.DataObject;
+import _ from 'lodash';
 
 // TODO:
 // USER <-> USER PROFILE
@@ -37,20 +24,16 @@ class Header extends React.Component {
 class SingleUser extends React.Component {
 	render() {
 		return (
-			<tr>
-				<td>{ this.props.user.username }</td>
-				<td>{ this.props.user.is_admin }</td>
-				<td>{ this.props.user.balance }</td>
-			</tr>
+			<UserForm user={this.props.user} updateUser={this.props.updateUser} />
 		)
 	}
 }
 
 class UserList extends React.Component {
   	render() {
-  		var usersNodes = this.props.users.map( user => {
+  		var usersNodes = this.props.users.map( (user, i) => {
 			return 	(
-				<SingleUser key={user.id} user={user} />
+				<SingleUser key={i} user={user} updateUser={this.props.updateUser} />
 			);
 		});
   		return (
@@ -58,8 +41,9 @@ class UserList extends React.Component {
   				<thead>
   					<tr>
 	  					<th>Kto</th>
-	  					<th>Czy admin</th>
+	  					<th>Hasło</th>
 	  					<th>Balance</th>
+	  					<th>Czy admin</th>
 					</tr>
   				</thead>
   				<tbody>
@@ -73,20 +57,17 @@ class UserList extends React.Component {
 class UserForm extends React.Component {
 	constructor (props) {
 		super(props);
-
-		this.state = {
-			name: '',
-			balance: 0
-		}
+		this.state = this.props.user;
 
 		this.setName = this.setName.bind(this);
 		this.setPassword = this.setPassword.bind(this);
 		this.setBalance = this.setBalance.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+		this.setIsAdmin = this.setIsAdmin.bind(this);
 	}
 	setName(e) {
+		console.log('setName',e.target.value);
 		this.setState({
-			name: e.target.value
+			username: e.target.value
 		});
 	}
 	setPassword(e) {
@@ -95,91 +76,113 @@ class UserForm extends React.Component {
 		});
 	}
 	setBalance(e) {
-		this.setState({
-			balance: e.target.value
-		});
+		this.setState(_.merge({}, this.state, {
+			profile: {
+				balance: e.target.value,
+			}
+		}));
 	}
-	handleSubmit(e) {
-		e.preventDefault();
-		var username = this.state.name;
-		var password = this.state.password;
-		var balance = this.state.balance;
-		if (!username || !password || !balance) {
-		  return;
-		}
-		this.props.onUserSubmit({username: username, password: password, balance: balance});
-		this.setState({name: '', password: '', balance: 0});
+	setIsAdmin(e) {
+		this.setState(_.merge({}, this.state, {
+			profile: {
+				is_admin: e.target.checked,
+			}
+		}));
 	}
 	render() {
+		let button = {};
+		if(typeof this.props.addUser !== 'undefined') {
+			button = (<button onClick={()=> {
+				        	this.props.addUser(this.state);
+							this.state = {
+								username: '',
+								password: '',
+								profile: {
+									is_admin: false,
+									balance: 0
+								}
+							};
+				        }}>
+			        	Add user
+			       	</button>)
+		} else if(typeof this.props.updateUser !== 'undefined') {
+			button = (<button onClick={()=> {
+				        	this.props.updateUser(this.state);
+				        	_.merge(this.state, this.state, {
+				        		password: null
+				        	});
+				        }}>
+			        	Update user
+			       	</button>)
+		}
 		return (
-			<form className="add-user" onSubmit={this.handleSubmit}>
-				<input
-					type="text"
-					placeholder="User name"
-					value={this.state.username}
-					onChange={this.setName}
-		        />
-		        <input
-					type="password"
-					placeholder="Password"
-					value={this.state.password}
-					onChange={this.setPassword}
-		        />
-		        <input
-					type="text"
-					placeholder="User balance"
-					value={this.state.balance}
-					onChange={this.setBalance}
-		        />
-		        <input type="submit" value="Add user" />
-			</form>
+			<tr className="add-user">
+				<td>
+					<input
+						type="text"
+						placeholder="User name"
+						value={this.state.username}
+						onChange={this.setName}
+			        />
+		        </td>
+		        <td>
+			        <input
+						type="password"
+						placeholder="Password"
+						value={this.state.password}
+						onChange={this.setPassword}
+			        />
+			    </td>
+		        <td>
+			        <input
+						type="text"
+						placeholder="User balance"
+						value={this.state.profile.balance}
+						onChange={this.setBalance}
+			        />
+			    </td>
+		        <td>
+			        <label>Is admin</label>
+			        <input
+						type="checkbox"
+						checked={this.state.profile.is_admin}
+						onChange={this.setIsAdmin}
+			        />
+			    </td>
+			    <td>
+			    	{button}
+		       	</td>
+			</tr>
 		)
 	}
 }
 
-class Users extends React.Component {
-	constructor (props) {
-		super(props);
-		this.state = {
-			users: []
-		};
-		this.handleUserSubmit = this.handleUserSubmit.bind(this);
-	}
-    fetchUsers() {
-    	DataObject
-	  	.please()
-	  	.list()
-	 	.then((res) => {
-	    	this.setState({ users: res })
-	    });
-    }
-    componentDidMount() {
-        this.fetchUsers();
-    }
-    handleUserSubmit(user) {
-    	const users = this.state.users
-	    const newUsers = users.concat([ user ])
-
-	    this.setState({ users: newUsers })
-
-		console.log('USER TO ADD', user)
-
-	    User
-	  	.please()
-	  	.create(user);
-
-	}
+class UsersView extends React.Component {
 	render() {
+		let user = {
+			username: '',
+			password: '',
+			profile: {
+				is_admin: false,
+				balance: 12
+			}
+		}
+
 		return (
 			<div>
 				<Header/>
 				<h3>Lista ludzi:</h3>
-				<UserList users={this.state.users}/>
+				<UserList users={this.props.users} updateUser={this.props.updateUser}/>
 				<h4>Dodaj użytkownika:</h4>
-				<UserForm onUserSubmit={this.handleUserSubmit}/>
+				<table>
+					<tbody>
+						<UserForm user={user} addUser={this.props.addUser}/>
+					</tbody>
+				</table>
 			</div>
 		)
 	}
 }
 
-export default Users;
+export default UsersView;
+
