@@ -44,6 +44,12 @@ class DishAdder extends React.Component {
 }
 
 class OrderView extends React.Component {
+	constructor(props) {
+        super(props);
+
+        console.log(props.routeParams.orderId);
+    }
+
 	render(){
 		let orderDishesArray = this.props.orderDishes.map((orderDish, i) => {
 			return <OrderDish orderDish={orderDish} key={i}/>

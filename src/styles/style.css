@@ -1,3 +1,14 @@
 body {
     background: pink;
 }
+
+a {
+	text-decoration: none;
+	color:blue;
+}
+
+a.active {
+	font-weight: bold;
+	color:green;
+
+}

@@ -181,4 +181,4 @@ class Users extends React.Component {
 	}
 }
 
-ReactDOM.render(<Users/>, node);
+export default Users;
