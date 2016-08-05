@@ -22,9 +22,11 @@ class SingleUser extends React.Component {
 	render() {
 		return (
 			<tr>
-				<td>{ this.props.user.username }</td>
-				<td>{ this.props.user.profile.is_admin }</td>
-				<td>{ this.props.user.profile.balance }</td>
+				<td> <input value={ this.props.user.username } /> </td>
+				<td> <input placeholder="new password" value={ this.props.user.password } /> </td>
+				<td> <input value={ this.props.user.profile.balance } /></td>
+				<td> <input type="checkbox" checked={ this.props.user.profile.is_admin } /></td>
+				<td><button>save</button></td>
 			</tr>
 		)
 	}
@@ -42,8 +44,9 @@ class UserList extends React.Component {
   				<thead>
   					<tr>
 	  					<th>Kto</th>
-	  					<th>Czy admin</th>
+	  					<th>Hasło</th>
 	  					<th>Balance</th>
+	  					<th>Czy admin</th>
 					</tr>
   				</thead>
   				<tbody>
