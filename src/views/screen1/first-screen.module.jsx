@@ -17,10 +17,11 @@ var DataObject = connection.DataObject;
 // Zadanie z gwiazdką:) Jeśli zamówienie jest tworzone przeze mnie, mały "X" na górze do kasowania go z bazy
 
 function storeToProps(store) {
-    console.log("elements: store.elements");
+    
     // console.log(store.elements);
     return {
         restaurants: store.restaurants,
+        orders: store.orders,
     };
 }
 
@@ -62,43 +63,38 @@ function dispatchToProps(dispatch) {
 }
 
 function refetch() {
-
-    DataEndpoint
+    var orderPromise = new Promise((resolve, reject) => { 
+       DataEndpoint
+        .please()
+        .fetchData({name: 'orders', instanceName: config.instanceName})
+        .then(function success(dataObjects) {
+            return resolve(dataObjects.objects);
+        }); 
+    });
+    var restaurantPromise = new Promise((resolve, reject) => {
+        DataEndpoint
         .please()
         .fetchData({name: 'restaurants', instanceName: config.instanceName})
         .then(function success(dataObjects) {
-            let restaurants = dataObjects.objects;
-            DataEndpoint
-                .please()
-                .fetchData({name: 'orders', instanceName: config.instanceName})
-                .then(function success(dataObjects) {
-                    let orders = dataObjects.objects.map((orderElement, i) => {
-                        restaurants = restaurants.map((restaurantElement, i) => {
-                            restaurantElement.ordered = false;
-                            restaurantElement.orders = [];
-                            if(orderElement.restaurant.value===restaurantElement.id) {
-                                restaurantElement.ordered = true;
-                                restaurantElement.orders.push(orderElement);
-                            }
-
-                            return restaurantElement;
-                        });
-
-                        return orderElement;
-                    });
-                    console.log("orders");
-                    console.log(orders);
-                    console.log("restaurants");
-                    console.log(restaurants);
-                    FirstScreenStore.dispatch({
-                        type: 'INIT_DATA',
-                        restaurants: restaurants,
-                    });
-                });
-
-
-
+            return resolve(dataObjects.objects);
         });
+    });
+    Promise.all([orderPromise, restaurantPromise]).then(responses => { 
+        console.log("responses");
+        console.log(responses);
+        FirstScreenStore.dispatch({
+            type: 'INIT_DATA',
+            orders: responses[0],
+            restaurants: responses[1]
+        });
+        // FirstScreenStore.dispatch({
+        //     type: 'INIT_DATA',
+        // });
+    }, reason => {
+    });
+
+
+
 
 
 }

@@ -27,30 +27,46 @@ class RestaurantView extends React.Component {
         super();
     }
     render() {
-        console.info("RENDER", this.props);
-        let activeRestaurants = this.props.restaurants.map((element, i) => {        
-            if(!element.ordered){
-                return <OrderElement selectOrder={this.props.selectOrder} elementObject={element} key={i}/>;
+        console.info("this.props");
+        console.info(this.props);
+        let orders = this.props.orders || [];
+        let activeOrders = [];
+        let activeRestaurants = [];
+        let restaurants = this.props.restaurants || [];
+
+            
+
+        
+        console.info("activeOrders");
+        console.info(activeOrders);
+        restaurants.map((element, i) => {        
+            let isOrdered = false;
+            orders.map((element2, i) => {    
+                console.log("element2.restaurant.value");    
+                console.log(element2.restaurant.value);    
+                if(element2.restaurant.value===element.id && !element2.is_closed) {
+                    isOrdered = true;
+                }
+                
+            });
+            if(isOrdered) {
+                activeOrders.push(<OrderElement selectOrder={this.props.selectOrder} elementObject={element} key={i}/>);
+            } else {
+                activeRestaurants.push(<OrderElement selectOrder={this.props.selectOrder} elementObject={element} key={i}/>);
             }
         });
-        activeRestaurants = <div>{activeRestaurants}</div>;
-        let newRestaurants = this.props.restaurants.map((element, i) => {
-            if(element.ordered){
-                return <RestaurantElement selectRestaurant={this.props.selectRestaurant} elementObject={element} key={i}/>;
-            }
-        });
-        newRestaurants = <div>{newRestaurants}</div>;
+
 
         return (
             <div className="container">
                 <h1>FOOD <span>HUT</span></h1>
                 <h3>Aktywne Zamówienia:</h3>
                 <div className="restaurantContainer">
-                    {activeRestaurants}
+                    {activeOrders}
                 </div>
                 <h3>Nowe Zamówienie:</h3>
                 <div className="restaurantContainer">
-                    {newRestaurants}
+                    {activeRestaurants}
                 </div>
             </div>
         );
