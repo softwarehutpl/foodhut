@@ -5,7 +5,7 @@ import Restaurant from './item.jsx';
 
 export default class RestaurantList extends React.Component {
 	constructor(props) {
-        super(props);
+        super(props);       
     }
 
   	render() {
@@ -46,11 +46,11 @@ export default class RestaurantList extends React.Component {
 }
 
 //Props validation
-RestaurantList.propTypes = {
-	restaurants: PropTypes.array.isRequired,
-	orderBy: React.PropTypes.string.isRequired,
-	onOrderByChange: PropTypes.func.isRequired
-}
+// RestaurantList.propTypes = {
+// 	restaurants: PropTypes.array.isRequired,
+// 	orderBy: React.PropTypes.string.isRequired,
+// 	onOrderByChange: PropTypes.func.isRequired
+// }
 
 //Define class constants
 Object.defineProperties(RestaurantList, {

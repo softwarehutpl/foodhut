@@ -1,12 +1,12 @@
 import React from 'react';
 import { Provider, connect } from 'react-redux';
 import OrderView from './order.view.jsx';
-import OrderStore from './order.store.js';
 import $orderDish from '../../services/order-dish.service.js';
 import $user from '../../services/user.service.js';
 
 import $test from '../../services/test.service.js';
 import MOCK from '../../mock.js';
+import Store from '../../store';
 
 // TODO:
 // account balance DONE
@@ -27,8 +27,8 @@ testService.getLoggedUser(MOCK.USER_ID)
 
 function storeToProps(store) {
 	return {
-		orderDishes: store.orderDishes,
-		account: store.account,
+		orderDishes: store.order.orderDishes,
+		account: store.order.account,
 	};
 }
 
@@ -62,7 +62,7 @@ function dispatchToProps(dispatch) {
 function fetchDishes() {
 	orderDishService.getOrderDishes(MOCK.ORDER_ID)
 		.then(function success(orderDishes){
-			OrderStore.dispatch({
+			Store.dispatch({
 				type: 'INIT_DATA',
 				orderDishes: orderDishes.objects
 			});
@@ -72,15 +72,18 @@ function fetchDishes() {
 function fetchAccount() {
 	userService.getUser(MOCK.USER_ID)
 		.then(function success(user){
-			OrderStore.dispatch({
+			Store.dispatch({
 				type: 'INIT_USER_PROFILE',
 				account: user,
 			});
-		});
+		})
+		.catch((error) => {
+            console.log(`Get rorder error: ${error}`);
+        });
 }
 
 let OrderDishes = connect(storeToProps, dispatchToProps)(OrderView);
 fetchAccount();
 fetchDishes();
 
-export default <Provider store={OrderStore}><OrderDishes/></Provider>;
+export default connect(storeToProps, dispatchToProps)(OrderView);
