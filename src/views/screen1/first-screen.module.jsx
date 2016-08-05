@@ -43,7 +43,7 @@ function dispatchToProps(dispatch) {
 
             var order = {
                 is_closed: false,
-                restaurant: id,
+                restaurant: {value: id},
                 instanceName: config.instanceName,
                 className: 'orders',
                 price: 0,

@@ -27,23 +27,14 @@ class RestaurantView extends React.Component {
         super();
     }
     render() {
-        console.info("this.props");
-        console.info(this.props);
         let orders = this.props.orders || [];
         let activeOrders = [];
         let activeRestaurants = [];
         let restaurants = this.props.restaurants || [];
 
-            
-
-        
-        console.info("activeOrders");
-        console.info(activeOrders);
         restaurants.map((element, i) => {        
             let isOrdered = false;
-            orders.map((element2, i) => {    
-                console.log("element2.restaurant.value");    
-                console.log(element2.restaurant.value);    
+            orders.map((element2, i) => {       
                 if(element2.restaurant.value===element.id && !element2.is_closed) {
                     isOrdered = true;
                 }
@@ -52,7 +43,7 @@ class RestaurantView extends React.Component {
             if(isOrdered) {
                 activeOrders.push(<OrderElement selectOrder={this.props.selectOrder} elementObject={element} key={i}/>);
             } else {
-                activeRestaurants.push(<OrderElement selectOrder={this.props.selectOrder} elementObject={element} key={i}/>);
+                activeRestaurants.push(<OrderElement selectRestaurant={this.props.selectRestaurant} elementObject={element} key={i}/>);
             }
         });
 
