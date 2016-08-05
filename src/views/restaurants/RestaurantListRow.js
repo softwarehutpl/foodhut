@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-export default class Restaurant extends React.Component {
+export default class RestaurantListRow extends React.Component {
 
     /**
      * Constructor

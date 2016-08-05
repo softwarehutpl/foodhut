@@ -1,7 +1,7 @@
 'use strict';
 
 import React, {PropTypes} from 'react';
-import Restaurant from './item.jsx';
+import RestaurantListRow from './RestaurantListRow';
 
 export default class RestaurantList extends React.Component {
 	constructor(props) {
@@ -11,7 +11,7 @@ export default class RestaurantList extends React.Component {
   	render() {
   		const restaurantNodes = this.props.restaurants.map( restaurant => {
 			return 	(
-				<Restaurant key={restaurant.id ? restaurant.id : Date.now()} restaurant={restaurant} />
+				<RestaurantListRow key={restaurant.id ? restaurant.id : Date.now()} restaurant={restaurant} />
 			);
 		});
 
@@ -46,11 +46,11 @@ export default class RestaurantList extends React.Component {
 }
 
 //Props validation
-// RestaurantList.propTypes = {
-// 	restaurants: PropTypes.array.isRequired,
-// 	orderBy: React.PropTypes.string.isRequired,
-// 	onOrderByChange: PropTypes.func.isRequired
-// }
+RestaurantList.propTypes = {
+	restaurants: PropTypes.array.isRequired,
+	orderBy: React.PropTypes.string.isRequired,
+	onOrderByChange: PropTypes.func.isRequired
+}
 
 //Define class constants
 Object.defineProperties(RestaurantList, {

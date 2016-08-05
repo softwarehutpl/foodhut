@@ -2,11 +2,8 @@ import React from 'react';
 import { Provider, connect } from "react-redux";
 import RestaurantSyncanoService from '../../services/RestaurantSyncanoService.js';
 import RestaurantsPage from "./RestaurantsPage.jsx";
-import RestaurantList from './list.jsx';
+import RestaurantList from './RestaurantList';
 import Store from '../../store';
-
-// TODO:
-// routing
 
 function stateToProps(state) {
     return {

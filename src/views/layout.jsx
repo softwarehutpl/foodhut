@@ -11,6 +11,8 @@ class App extends React.Component {
                 <div>
                 	<nav>
                 		<IndexLink to="/" activeClassName="active">Home</IndexLink>
+                        {" | "}
+                        <IndexLink to="/dashboard" activeClassName="active">Dashboard</IndexLink>
                 		{" | "}
 				      	<IndexLink to="/users" activeClassName="active">Users</IndexLink>
 					    {" | "}
