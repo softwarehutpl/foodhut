@@ -5,13 +5,16 @@ class OrderElement extends React.Component {
         return (<div className="box">
             {this.props.elementObject.name}<br/>
             {this.props.elementObject.menu_link}<br/>
-            <button onClick={() => this.props.selectOrder(this.props.elementObject.id)}>Wybierz</button>
+            <button onClick={() => this.props.selectRestaurant(this.props.elementObject.id)}>Wybierz</button>
         </div>);
     }
 }
 class RestaurantElement extends React.Component {
     render() {
+        
+
         return (<div className="box">
+        {this.props}
             {this.props.elementObject.name}<br/>
             {this.props.elementObject.menu_link}<br/>
             <button onClick={() => this.props.selectRestaurant(this.props.elementObject.id)}>Wybierz</button>
@@ -41,7 +44,7 @@ class RestaurantView extends React.Component {
                 
             });
             if(isOrdered) {
-                activeOrders.push(<OrderElement selectOrder={this.props.selectOrder} elementObject={element} key={i}/>);
+                activeOrders.push(<OrderElement selectRestaurant={this.props.selectRestaurant} elementObject={element} key={i}/>);
             } else {
                 activeRestaurants.push(<OrderElement selectRestaurant={this.props.selectRestaurant} elementObject={element} key={i}/>);
             }
