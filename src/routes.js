@@ -6,9 +6,12 @@ import DashboardPage from './views/screen1/first-screen.module.jsx';
 import RestaurantsPage from './views/restaurants/module.jsx';
 import OrderPage from './views/order/order.module.jsx';
 import UsersPage from './views/users/users.view.jsx';
+import Store from './store';
 
-//@todo
-// - pobieranie danych z API dopiero po wejsciu na link, teraz mamy na start wsystkie ajaxy odpalone
+// const onRestaurantsEnter = (nextState, replace, callback) => {
+// 	console.log('on enter');
+// 	callback();
+// }
 
 export default (
 	<Route path="/" component={layout}>     	

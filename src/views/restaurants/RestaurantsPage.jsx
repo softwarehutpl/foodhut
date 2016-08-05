@@ -5,6 +5,10 @@ import RestaurantList from './RestaurantList';
 import RestaurantForm from './RestaurantForm';
 
 class RestaurantsPage extends React.Component {
+    componentDidMount() { 
+        this.props.loadRestaurants();
+    }
+
   	render() {
     	return (
     	    <div className="restaurantBox">

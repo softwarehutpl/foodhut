@@ -54,6 +54,9 @@ function dispatchToProps(dispatch) {
                 }));
             }
 
+        },
+        loadRestaurants: function() { 
+            getRestaurants();
         }
     };
 }
@@ -78,7 +81,5 @@ function getRestaurants() {
         })
     ;
 }
-
-getRestaurants();
 
 export default connect(stateToProps, dispatchToProps)(RestaurantsPage);
