@@ -1,20 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Syncano from 'syncano';
+// import Syncano from 'syncano';
 
-const node = document.querySelector('#content');
+// const node = document.querySelector('#content');
 
-var connection = Syncano({
-	apiKey: "4a76384d8137935042a557e020ace03382cdc755",
-	defaults: {
-		instanceName: "autumn-field-2134",
-		className: "user_profile"
-	}
-});
+// var connection = Syncano({
+// 	apiKey: "4a76384d8137935042a557e020ace03382cdc755",
+// 	defaults: {
+// 		instanceName: "autumn-field-2134",
+// 		className: "user_profile"
+// 	}
+// });
 
-var User = connection.User;
+// var account = new Syncano({
+// 	accountKey: "7f1adc626650d02b996dc0be0fb82a9a6ffbc8ae",
+// 	defaults: {
+// 		instanceName: "autumn-field-2134"
+// 	}
+// });
 
-var DataObject = connection.DataObject; 
+// var User = connection.User;
+
+// var DataObject = connection.DataObject; 
 
 // TODO:
 // w syncano dodac hasla
@@ -38,8 +45,8 @@ class SingleUser extends React.Component {
 		return (
 			<tr>
 				<td>{ this.props.user.username }</td>
-				<td>{ this.props.user.is_admin }</td>
-				<td>{ this.props.user.balance }</td>
+				<td>{ this.props.user.profile.is_admin }</td>
+				<td>{ this.props.user.profile.balance }</td>
 			</tr>
 		)
 	}
@@ -47,9 +54,9 @@ class SingleUser extends React.Component {
 
 class UserList extends React.Component {
   	render() {
-  		var usersNodes = this.props.users.map( user => {
+  		var usersNodes = this.props.users.map( (user, i) => {
 			return 	(
-				<SingleUser key={user.id} user={user} />
+				<SingleUser key={i} user={user} />
 			);
 		});
   		return (
@@ -74,18 +81,21 @@ class UserForm extends React.Component {
 		super(props);
 
 		this.state = {
-			name: '',
-			balance: 0
+			username: '',
+			password: '',
+			is_admin: false,
+			balance: 0,
 		}
 
 		this.setName = this.setName.bind(this);
 		this.setPassword = this.setPassword.bind(this);
 		this.setBalance = this.setBalance.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+
+		// this.handleSubmit = this.handleSubmit.bind(this);
 	}
 	setName(e) {
 		this.setState({
-			name: e.target.value
+			username: e.target.value
 		});
 	}
 	setPassword(e) {
@@ -98,20 +108,10 @@ class UserForm extends React.Component {
 			balance: e.target.value
 		});
 	}
-	handleSubmit(e) {
-		e.preventDefault();
-		var username = this.state.name;
-		var password = this.state.password;
-		var balance = this.state.balance;
-		if (!username || !password || !balance) {
-		  return;
-		}
-		this.props.onUserSubmit({username: username, password: password, balance: balance});
-		this.setState({name: '', password: '', balance: 0});
-	}
 	render() {
 		return (
-			<form className="add-user" onSubmit={this.handleSubmit}>
+			<form className="add-user">
+
 				<input
 					type="text"
 					placeholder="User name"
@@ -130,55 +130,31 @@ class UserForm extends React.Component {
 					value={this.state.balance}
 					onChange={this.setBalance}
 		        />
+		        <button type="button" onClick={()=>this.props.addUser(
+				this.state.username, 
+				this.state.password, 
+				this.state.is_admin, 
+				this.state.balance
+			)}>DODAJ K</button>
 		        <input type="submit" value="Add user" />
 			</form>
 		)
 	}
 }
 
-class Users extends React.Component {
-	constructor (props) {
-		super(props);
-		this.state = {
-			users: []
-		};
-		this.handleUserSubmit = this.handleUserSubmit.bind(this);
-	}
-    fetchUsers() {
-    	DataObject
-	  	.please()
-	  	.list()
-	 	.then((res) => {
-	    	this.setState({ users: res })
-	    });
-    }
-    componentDidMount() {
-        this.fetchUsers();
-    }
-    handleUserSubmit(user) {
-    	const users = this.state.users
-	    const newUsers = users.concat([ user ])
-
-	    this.setState({ users: newUsers })
-
-		console.log('USER TO ADD', user)
-
-	    User
-	  	.please()
-	  	.create(user);
-
-	}
+class UsersView extends React.Component {
 	render() {
+
 		return (
 			<div>
 				<Header/>	
 				<h3>Lista ludzi:</h3>
-				<UserList users={this.state.users}/>
+				<UserList users={this.props.users}/>
 				<h4>Dodaj użytkownika:</h4>
-				<UserForm onUserSubmit={this.handleUserSubmit}/>
+				<UserForm addUser={this.props.addUser}/>
 			</div>
 		)
 	}
 }
 
-ReactDOM.render(<Users/>, node);
+export default UsersView;
