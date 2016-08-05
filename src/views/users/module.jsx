@@ -15,6 +15,7 @@ function storeToProps(store) {
 function dispatchToProps(dispatch) {
 	return {
 		addUser: function addUser(username, password, is_admin, balance) {
+			console.log('invoke add user in module, is admin', is_admin);
 			dispatch({
 				type: 'ADD_USER',
 				username: username,
@@ -31,7 +32,7 @@ function dispatchToProps(dispatch) {
 
 			$user.addUser(user)
 				.then(() => {
-					// fetchUsers();
+					fetchUsers();
 				});
 		}
 	};

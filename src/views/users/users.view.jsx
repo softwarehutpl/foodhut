@@ -1,27 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import Syncano from 'syncano';
-
-// const node = document.querySelector('#content');
-
-// var connection = Syncano({
-// 	apiKey: "4a76384d8137935042a557e020ace03382cdc755",
-// 	defaults: {
-// 		instanceName: "autumn-field-2134",
-// 		className: "user_profile"
-// 	}
-// });
-
-// var account = new Syncano({
-// 	accountKey: "7f1adc626650d02b996dc0be0fb82a9a6ffbc8ae",
-// 	defaults: {
-// 		instanceName: "autumn-field-2134"
-// 	}
-// });
-
-// var User = connection.User;
-
-// var DataObject = connection.DataObject; 
 
 // TODO:
 // w syncano dodac hasla
@@ -90,10 +68,10 @@ class UserForm extends React.Component {
 		this.setName = this.setName.bind(this);
 		this.setPassword = this.setPassword.bind(this);
 		this.setBalance = this.setBalance.bind(this);
-
-		// this.handleSubmit = this.handleSubmit.bind(this);
+		this.setIsAdmin = this.setIsAdmin.bind(this);
 	}
 	setName(e) {
+		console.log('setName',e.target.value);
 		this.setState({
 			username: e.target.value
 		});
@@ -108,9 +86,15 @@ class UserForm extends React.Component {
 			balance: e.target.value
 		});
 	}
+	setIsAdmin(e) {
+		console.log('setisadmin',e.target.checked );
+		this.setState({
+			is_admin: e.target.checked
+		});
+	}
 	render() {
 		return (
-			<form className="add-user">
+			<div className="add-user">
 
 				<input
 					type="text"
@@ -130,14 +114,29 @@ class UserForm extends React.Component {
 					value={this.state.balance}
 					onChange={this.setBalance}
 		        />
-		        <button type="button" onClick={()=>this.props.addUser(
-				this.state.username, 
-				this.state.password, 
-				this.state.is_admin, 
-				this.state.balance
-			)}>DODAJ K</button>
-		        <input type="submit" value="Add user" />
-			</form>
+		        <label>Is admin</label>
+		        <input
+					type="checkbox"
+					checked={this.state.is_admin}
+					onChange={this.setIsAdmin}
+		        />
+		        <button type="button" onClick={()=> {
+		        	this.props.addUser(
+					this.state.username, 
+					this.state.password, 
+					this.state.is_admin, 
+					this.state.balance
+					);
+					this.state = {
+						username: '',
+						password: '',
+						is_admin: false,
+						balance: 0,
+					};
+		        }}>
+		        	Add user
+		       	</button>
+			</div>
 		)
 	}
 }

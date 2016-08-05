@@ -8,8 +8,10 @@ function add(state, action) {
     users.push({
         username: action.username,
         password: action.password,
-        is_admin: action.is_admin,
-        balance: action.balance,
+        profile: {
+            is_admin: action.is_admin,
+            balance: action.balance
+        },
     });
 
     return Object.assign({}, state, { users: users });

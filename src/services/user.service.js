@@ -7,12 +7,6 @@ export default class UserService extends BaseService {
      */
     constructor() {
         super();
-        this.account = new Syncano({
-            accountKey: "7f1adc626650d02b996dc0be0fb82a9a6ffbc8ae",
-            defaults: {
-                instanceName: "autumn-field-2134"
-            }
-        });
     }
 
     /**
@@ -29,11 +23,20 @@ export default class UserService extends BaseService {
     }
 
     addUser(user) {
-        user.className = this.constant.userClass;
-        return this.add(user);
+        let apiUser = this.connection.User;
+        var options = {
+            username: user.username,
+            password: user.password,
+            profile: {
+                is_admin: user.is_admin,
+                balance: user.balance
+            }
+        };
+
+        return apiUser.please().create(options);
     }
 
     getUsers() {
-        return this.account.Instance().users().list();
+        return this.connection.Instance().users().list();
     }
 }

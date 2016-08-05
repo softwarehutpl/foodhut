@@ -7,7 +7,12 @@ export default class BaseService {
      */
     constructor() {
     	this.constant = constant;
-        this.connection = Syncano({ accountKey: 'f105d32a319e87a61c349e5ee2ec5dbec3d7b7f8' });
+        this.connection = Syncano({ 
+            apiKey: '4a76384d8137935042a557e020ace03382cdc755',
+            defaults: {
+                instanceName: "autumn-field-2134"
+            } 
+        });
     }
 
     /**
@@ -16,8 +21,6 @@ export default class BaseService {
      * @return {Promise}
      */
     add(entity) {
-        entity.instanceName = this.constant.instanceName;
-
         return this.connection.DataObject
             .please()
             .create(entity);
@@ -29,8 +32,6 @@ export default class BaseService {
      * @return {Promise}
      */
     fetch(query) {
-        query.instanceName = this.constant.instanceName;
-
         return this.connection.DataObject
             .please()
             .get(query);
@@ -42,8 +43,6 @@ export default class BaseService {
      * @return {Promise}
      */
     fetchList(query) {
-        query.instanceName = this.constant.instanceName;
-
         return this.connection.DataEndpoint
             .please()
             .fetchData(query);
