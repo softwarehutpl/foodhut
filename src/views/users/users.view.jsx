@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // TODO:
+// USER <-> USER PROFILE
 // w syncano dodac hasla
 // edycja hasel
 // edycja balansu kasy konta hajsu $$
@@ -149,7 +150,7 @@ class UsersView extends React.Component {
 
 		return (
 			<div>
-				<Header/>	
+				<Header/>
 				<h3>Lista ludzi:</h3>
 				<UserList users={this.props.users}/>
 				<h4>Dodaj użytkownika:</h4>

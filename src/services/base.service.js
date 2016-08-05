@@ -27,6 +27,19 @@ export default class BaseService {
     }
 
     /**
+     * remove entity
+     * @parameter {Object} query
+     * @return {Promise}
+     */
+    remove(entity) {
+        entity.instanceName = this.constant.instanceName;
+
+        return this.connection.DataObject
+            .please()
+            .delete(entity);
+    }
+
+    /**
      * get single entity 
      * @parameter {Object} query
      * @return {Promise}
