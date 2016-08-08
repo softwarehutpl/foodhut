@@ -5,7 +5,7 @@ import HomePage from './views/home/HomePage';
 import DashboardPage from './views/screen1/first-screen.module.jsx';
 import RestaurantsPage from './views/restaurants/module.jsx';
 import OrderPage from './views/order/order.module.jsx';
-import UsersPage from './views/users/users.view.jsx';
+import UsersPage from './views/users/module.jsx';
 import Store from './store';
 
 // const onRestaurantsEnter = (nextState, replace, callback) => {

@@ -91,7 +91,7 @@ function refetch() {
                     console.log("restaurants");
                     console.log(restaurants);
                     Store.dispatch({
-                        type: 'INIT_DATA',
+                        type: 'DASHBOARD_INIT_DATA',
                         restaurants: restaurants,
                     });
                 });

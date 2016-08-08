@@ -3,10 +3,12 @@
 import React from 'react';
 import RestaurantList from './RestaurantList';
 import RestaurantForm from './RestaurantForm';
+import { withRouter } from 'react-router';
 
 class RestaurantsPage extends React.Component {
     componentDidMount() { 
         this.props.loadRestaurants();
+        //this.props.router.push('/dashboard');
     }
 
   	render() {
@@ -26,4 +28,4 @@ class RestaurantsPage extends React.Component {
   	}
 }
 
-export default RestaurantsPage;
+export default withRouter(RestaurantsPage);

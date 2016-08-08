@@ -22,7 +22,7 @@ function reduce(state, action) {
         return add(newState, action);
     }
 
-    if (action.type === 'INIT_DATA') {
+    if (action.type === 'DASHBOARD_INIT_DATA') {
         return initdata(newState, action);
     }
 

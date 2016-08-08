@@ -1,14 +1,14 @@
 import React from 'react';
 import { Provider, connect } from 'react-redux';
 import UsersView from './users.view.jsx';
-import UserStore from './store.js';
 import UserService from '../../services/user.service.js';
+import Store from '../../store';
 
 var $user = new UserService();
 
 function storeToProps(store) {
 	return {
-		users: store.users,
+		users: store.users.users,
 	};
 }
 
@@ -37,14 +37,14 @@ function dispatchToProps(dispatch) {
 
 function fetchUsers() {
 	$user.getUsers()
-		.then(function(users){
-			UserStore.dispatch({
-				type: 'INIT_DATA',
+		.then(function(users){			
+			Store.dispatch({
+				type: 'USERS_INIT_DATA',
 				users: users,
 			});
 		});
 }
 
-let Users = connect(storeToProps, dispatchToProps)(UsersView);
 fetchUsers();
-export default <Provider store={UserStore}><Users/></Provider>;
+
+export default connect(storeToProps, dispatchToProps)(UsersView);

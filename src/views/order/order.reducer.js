@@ -32,7 +32,7 @@ function initAccount(state, action) {
 function reduce(state, action) {
     let newState = state || { account: { balance: 0 }, orderDishes: [] };
 
-    if (action.type === 'INIT_DATA') {
+    if (action.type === 'ORDER_INIT_DATA') {
         return initData(newState, action);
     }
 

@@ -164,7 +164,7 @@ class UsersView extends React.Component {
 			password: '',
 			profile: {
 				is_admin: false,
-				balance: 12
+				balance: 0
 			}
 		}
 

@@ -1,4 +1,4 @@
-function initData(state, action) {
+function initData(state, action) {  
     return Object.assign({}, state, { users: action.users });
 }
 
@@ -14,7 +14,7 @@ function add(state, action) {
 function reduce(state, action) {
     let newState = state || { users: [] };
 
-    if (action.type === 'INIT_DATA') {
+    if (action.type === 'USERS_INIT_DATA') {
         return initData(newState, action);
     }
 

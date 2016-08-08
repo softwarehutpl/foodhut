@@ -63,7 +63,7 @@ function fetchDishes() {
 	orderDishService.getOrderDishes(MOCK.ORDER_ID)
 		.then(function success(orderDishes){
 			Store.dispatch({
-				type: 'INIT_DATA',
+				type: 'ORDER_INIT_DATA',
 				orderDishes: orderDishes.objects
 			});
 		});
